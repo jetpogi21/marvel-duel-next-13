@@ -4,5 +4,5 @@ export const links = [
   { id: 2, name: "Decks", href: "/decks" },
   { id: 3, name: "Card Skills", href: "/card-skills" },
   { id: 4, name: "Card Keywords", href: "/card-keywords" },
+  { id: 5, name: "Hero Skills", href: "/hero-skills" },
 ];
-``;
