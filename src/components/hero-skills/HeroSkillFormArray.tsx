@@ -75,7 +75,10 @@ const HeroSkillFormArray: React.FC<HeroSkillFormArrayProps> = ({ formik }) => {
     isLoading,
     isFetching,
     fetchNextPage,
-  } = useInfiniteQuery<GetHeroSkillsResponse>(["heroSkills"], { enabled: false });
+  } = useInfiniteQuery<GetHeroSkillsResponse>(["heroSkills"], {
+    enabled: false,
+    staleTime: Infinity,
+  });
 
   //Transformations
   const sorting = getSorting(sort);
@@ -282,9 +285,14 @@ const HeroSkillFormArray: React.FC<HeroSkillFormArrayProps> = ({ formik }) => {
                     return (
                       <TableHead
                         key={header.id}
-                        className={cn({
-                          "w-[50px]": ["select", "actions"].includes(header.id),
-                        })}
+                        className={cn(
+                          {
+                            "w-[50px]": ["select", "actions"].includes(
+                              header.id
+                            ),
+                          },
+                          "p-2"
+                        )}
                         style={{
                           width: `${customWidth}px`,
                         }}

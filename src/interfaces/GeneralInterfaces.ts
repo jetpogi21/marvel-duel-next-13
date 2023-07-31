@@ -1,6 +1,7 @@
 export interface BasicModel {
   id: number | string;
   name: string;
+  icon?: React.ComponentType<{ className?: string }>;
 }
 
 export interface BreadcrumbLink {

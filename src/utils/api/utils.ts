@@ -1,5 +1,6 @@
 import clsSQL from "@/utils/clsSQL";
 import { splitWordByLastHyphen } from "@/utils/utils";
+import { Op } from "sequelize";
 
 export function getSortedValue(
   sort: string | undefined,
@@ -109,4 +110,46 @@ export function processFields(
     fieldAliases.push(fieldAlias);
     sql.fields.push(`${table}.${fieldName} AS ${fieldAlias}`);
   });
+}
+
+export function buildOrConditions(
+  sortField: string,
+  cursorCondition: symbol,
+  cursorArray: [string, string],
+  primaryKey: string
+) {
+  return {
+    [Op.or]: {
+      [sortField]: {
+        [Op.or]: {
+          [Op.is]: null,
+          [cursorCondition]: cursorArray[0],
+        },
+      },
+      [Op.and]: {
+        [sortField]: cursorArray[0],
+        [primaryKey]: {
+          [Op.gt]: cursorArray[1],
+        },
+      },
+    },
+  };
+}
+
+export function buildAndConditions(
+  sortField: string,
+  cursorCondition: symbol,
+  cursorArray: [string, string],
+  primaryKey: string
+) {
+  return {
+    [Op.and]: {
+      [sortField]: {
+        [cursorCondition]: cursorArray[0],
+      },
+      [primaryKey]: {
+        [Op.gt]: cursorArray[1],
+      },
+    },
+  };
 }

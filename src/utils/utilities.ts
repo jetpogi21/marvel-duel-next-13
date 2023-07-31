@@ -104,7 +104,7 @@ export const getFilterValueFromURL = (
             newValue[key] = value.map((item) => ({ id: item }));
           } else if (typeof value === "string") {
             newValue[key] = value.split(",").map((item) => {
-              return { id: item.trim() };
+              return item.trim();
             });
           } else {
             newValue[key] = [{ id: value }];
@@ -213,6 +213,8 @@ export const getParamsObject = (
   defaultValue: Record<string, unknown>
 ): Record<string, string> => {
   // Create a new object to store the transformed values
+  console.log(values);
+
   const result: Record<string, string> = {};
 
   // Loop through the entries of the values object
@@ -230,6 +232,8 @@ export const getParamsObject = (
         result[key] = value
           .map((item) => (item.hasOwnProperty("id") ? item.id : item))
           .join(",");
+      } else {
+        result[key] = "";
       }
     } else if (typeof defaultValue[key] === "boolean" && value) {
       result[key] = "true";

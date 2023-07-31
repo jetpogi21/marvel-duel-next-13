@@ -18,6 +18,9 @@ export interface FormikInputProps extends InputProps {
   helperText?: string;
   submitOnChange?: boolean;
   containerClassNames?: ClassValue[];
+  isNumeric?: boolean;
+  wholeNumberOnly?: boolean;
+  allowNegative?: boolean;
 }
 
 export const FormikInput: React.FC<FormikInputProps> = ({
@@ -29,11 +32,14 @@ export const FormikInput: React.FC<FormikInputProps> = ({
   onKeyDown,
   helperText,
   submitOnChange = false,
+  wholeNumberOnly = true,
+  allowNegative = false,
+  isNumeric = false,
   ...props
 }) => {
   const { submitForm } = useFormikContext();
   const [field, meta, { setValue }] = useField(props.name);
-  const fieldValue = field.value || "";
+  const fieldValue = field.value === 0 ? field.value : field.value || "";
   const [internalVal, setInternalVal] = useState(fieldValue);
 
   const [typingTimer, setTypingTimer] = useState<NodeJS.Timeout | undefined>(
@@ -43,6 +49,11 @@ export const FormikInput: React.FC<FormikInputProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const hasError = meta.touched && meta.error;
+
+  let inputType = "text";
+  if (isNumeric) {
+    inputType = "number";
+  }
 
   const handleTyping = () => {
     clearTimeout(typingTimer);
@@ -74,10 +85,55 @@ export const FormikInput: React.FC<FormikInputProps> = ({
     setValue(internalVal);
   };
 
+  const isNumericInput = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    wholeNumberOnly: boolean,
+    allowNegative: boolean
+  ) => {
+    const charCode = e.key.charCodeAt(0);
+
+    // Allow numbers 0-9
+    if (charCode >= 48 && charCode <= 57) {
+      return true;
+    }
+
+    // Allow backspace, tab, enter, escape, arrow keys, home, end, and minus (-)
+    if (
+      charCode === 8 || // Backspace
+      charCode === 9 || // Tab
+      charCode === 13 || // Enter
+      charCode === 27 || // Escape
+      (charCode >= 35 && charCode <= 40) || // Home, End, Arrow keys
+      (allowNegative && charCode === 45) // Minus (-) if allowed
+    ) {
+      return true;
+    }
+
+    // Allow negative sign only at the start if it's allowed
+    if (
+      allowNegative &&
+      e.currentTarget.selectionStart === 0 &&
+      charCode === 45
+    ) {
+      return true;
+    }
+
+    // Prevent the period (decimal point) if wholeNumberOnly is true
+    if (wholeNumberOnly && charCode === 46) {
+      return false;
+    }
+
+    return false;
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       //@ts-ignore
       setValue(e.target.value);
+    }
+
+    if (isNumeric && !isNumericInput(e, wholeNumberOnly, allowNegative)) {
+      e.preventDefault();
     }
 
     if (onKeyDown) {
@@ -107,6 +163,7 @@ export const FormikInput: React.FC<FormikInputProps> = ({
     <div className={cn("flex flex-col w-full gap-1.5", containerClassNames)}>
       {!!label && <Label htmlFor={props.name}>{label}</Label>}
       <Input
+        type={inputType}
         ref={propInputRef || inputRef}
         onChange={handleChange}
         onBlur={handleBlur}

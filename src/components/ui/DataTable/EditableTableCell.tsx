@@ -1,12 +1,20 @@
 import { FormikCheckbox } from "@/components/formik/FormikCheckbox";
+import { FormikCombobox } from "@/components/formik/FormikCombobox";
 import { FormikInput } from "@/components/formik/FormikInput";
+import { FormikSelect } from "@/components/formik/FormikSelect";
 import { FormikTextArea } from "@/components/formik/FormikTextArea";
+import useHeroList from "@/hooks/heroes/useHeroList";
+import { BasicModel } from "@/interfaces/GeneralInterfaces";
 import { CellContext } from "@tanstack/react-table";
 import { RefObject } from "react";
 
 // Define a custom type for the column definition meta
 type ColumnDefMeta = {
-  type: "Textarea" | "Checkbox" | "Input";
+  type: "Textarea" | "Checkbox" | "Input" | "Select" | "Combobox";
+  options: BasicModel[];
+  listName: string;
+  isNumeric: boolean;
+  isWholeNumber: boolean;
 };
 
 export const EditableTableCell = <TData, TValue>(
@@ -18,6 +26,10 @@ export const EditableTableCell = <TData, TValue>(
 
   // Use type assertion to access the column definition meta
   const type = (column.columnDef.meta as ColumnDefMeta).type;
+  const options = (column.columnDef.meta as ColumnDefMeta).options;
+  const listName = (column.columnDef.meta as ColumnDefMeta).listName;
+  const isNumeric = (column.columnDef.meta as ColumnDefMeta).isNumeric;
+  const isWholeNumber = (column.columnDef.meta as ColumnDefMeta).isWholeNumber;
 
   const {
     name,
@@ -76,10 +88,30 @@ export const EditableTableCell = <TData, TValue>(
           }
         />
       );
+    case "Select":
+      return (
+        <FormikSelect
+          {...commonProps}
+          options={options}
+        />
+      );
+    case "Combobox":
+      const { data } = useHeroList();
 
+      return (
+        <FormikCombobox
+          {...commonProps}
+          freeSolo={false}
+          items={data || []}
+          label=""
+          showLabel={false}
+        />
+      );
     default:
       return (
         <FormikInput
+          isNumeric={isNumeric}
+          wholeNumberOnly={isWholeNumber}
           {...commonProps}
           inputRef={
             dataRows === index + 1 && column.id === firstFieldInForm
