@@ -1,6 +1,5 @@
 import * as React from "react";
 import { CheckIcon, PlusCircleIcon } from "lucide-react";
-import { Column } from "@tanstack/react-table";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
@@ -36,7 +35,7 @@ export const FacetedControl: React.FC<FacetedControlProps> = ({
   value,
   title,
   options,
-  limit = 2,
+  limit = 4,
 }) => {
   const [internalVal, setInternalVal] = useState(value);
   const [input, setInput] = useState("");
@@ -83,7 +82,7 @@ export const FacetedControl: React.FC<FacetedControlProps> = ({
                 {internalVal.length > limit ? (
                   <Badge
                     variant="secondary"
-                    className="px-1 font-normal rounded-sm"
+                    className="px-1 font-normal rounded-sm whitespace-nowrap"
                   >
                     {internalVal.length} selected
                   </Badge>
@@ -96,7 +95,7 @@ export const FacetedControl: React.FC<FacetedControlProps> = ({
                       <Badge
                         variant="secondary"
                         key={option.name}
-                        className="px-1 font-normal rounded-sm"
+                        className="px-1 font-normal rounded-sm whitespace-nowrap"
                       >
                         {option.name}
                       </Badge>

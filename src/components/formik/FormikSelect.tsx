@@ -1,6 +1,6 @@
 "use client";
 
-import { Input, InputProps } from "@/components/ui/Input";
+import * as SelectPrimitive from "@radix-ui/react-select";
 import { Label } from "@/components/ui/Label";
 import { useField, useFormikContext } from "formik";
 import { useEffect, useRef, useState, RefObject } from "react";
@@ -14,8 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
-import { ButtonProps } from "@/components/ui/Button";
+import { Button, ButtonProps } from "@/components/ui/Button";
 import { BasicModel } from "@/interfaces/GeneralInterfaces";
+import { ChevronDown, X } from "lucide-react";
 
 export interface FormikSelectProps extends ButtonProps {
   label?: string;
@@ -28,6 +29,8 @@ export interface FormikSelectProps extends ButtonProps {
   submitOnChange?: boolean;
   containerClassNames?: ClassValue[];
   options: BasicModel[];
+  showLabel: boolean;
+  allowBlank: boolean;
 }
 
 export const FormikSelect: React.FC<FormikSelectProps> = ({
@@ -40,6 +43,8 @@ export const FormikSelect: React.FC<FormikSelectProps> = ({
   helperText,
   submitOnChange = false,
   options,
+  showLabel = true,
+  allowBlank = false,
   ...props
 }) => {
   const { submitForm } = useFormikContext();
@@ -57,22 +62,6 @@ export const FormikSelect: React.FC<FormikSelectProps> = ({
     submitOnChange && submitForm();
   };
 
-  const handleBlur = () => {
-    internalVal && setArrayTouched && setArrayTouched();
-    setValue(internalVal);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      //@ts-ignore
-      setValue(e.target.value);
-    }
-
-    if (onKeyDown) {
-      onKeyDown(e);
-    }
-  };
-
   useEffect(() => {
     if (fieldValue !== internalVal) {
       setInternalVal(fieldValue);
@@ -87,29 +76,57 @@ export const FormikSelect: React.FC<FormikSelectProps> = ({
 
   return (
     <div className={cn("flex flex-col w-full gap-1.5", containerClassNames)}>
-      {!!label && <Label htmlFor={props.name}>{label}</Label>}
-      <Select
-        onValueChange={handleChange}
-        defaultValue={fieldValue}
-        value={fieldValue}
-      >
-        <SelectTrigger>
-          <SelectValue
-            placeholder="Select a verified email to display"
-            onBlur={handleBlur}
-          />
-        </SelectTrigger>
-        <SelectContent>
-          {options.map(({ id, name }) => (
-            <SelectItem
-              value={id.toString()}
-              key={id}
-            >
-              {name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      {showLabel && !!label && <Label htmlFor={props.name}>{label}</Label>}
+      <div className={cn("flex", { "-mr-4": allowBlank && fieldValue })}>
+        <Select
+          onValueChange={handleChange}
+          defaultValue={fieldValue}
+          value={fieldValue}
+        >
+          <SelectTrigger>
+            {fieldValue ? (
+              <>
+                <SelectValue />
+                <SelectPrimitive.Icon asChild>
+                  <ChevronDown className="w-4 h-4 ml-6 opacity-50" />
+                </SelectPrimitive.Icon>
+              </>
+            ) : (
+              <>
+                <span className="text-xs text-muted-foreground">{label}</span>
+                <SelectPrimitive.Icon asChild>
+                  <ChevronDown className="w-4 h-4 ml-2 opacity-50" />
+                </SelectPrimitive.Icon>
+              </>
+            )}
+          </SelectTrigger>
+          <SelectContent>
+            {options.map(({ id, name }) => (
+              <SelectItem
+                value={id.toString()}
+                key={id}
+              >
+                {name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {allowBlank && fieldValue && (
+          <Button
+            type="button"
+            variant={"link"}
+            size={"sm"}
+            className="relative self-center w-auto h-4 p-0 right-12 hover:bg-accent"
+            onClick={(e) => {
+              e.stopPropagation();
+              setValue("");
+            }}
+          >
+            <X className="w-4 h-4 text-destructive" />
+          </Button>
+        )}
+      </div>
+
       {helperText && (
         <span className="mt-1 text-xs font-bold text-muted-foreground">
           {helperText}

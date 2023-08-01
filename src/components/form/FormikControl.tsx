@@ -2,6 +2,7 @@
 import { FormikCombobox } from "@/components/formik/FormikCombobox";
 import { FormikFacetedControl } from "@/components/formik/FormikFacetedControl";
 import { FormikInput } from "@/components/formik/FormikInput";
+import { FormikSelect } from "@/components/formik/FormikSelect";
 import { FormikSwitch } from "@/components/formik/FormikSwitch";
 import { BasicModel } from "@/interfaces/GeneralInterfaces";
 import { ClassValue } from "clsx";
@@ -30,6 +31,13 @@ interface ComboboxProps extends ControlProps {
   pluralizedLabel: string;
 }
 
+interface SelectProps extends ControlProps {
+  type: "Select";
+  options: BasicModel[];
+  showLabel: boolean;
+  allowBlank?: boolean;
+}
+
 interface FacetedControlProps extends ControlProps {
   type: "FacetedControl";
   options: BasicModel[];
@@ -39,7 +47,8 @@ type FormikControlProps =
   | FacetedControlProps
   | TextProps
   | SwitchProps
-  | ComboboxProps;
+  | ComboboxProps
+  | SelectProps;
 
 const FormikControl: React.FC<FormikControlProps> = (props) => {
   const {
@@ -78,6 +87,17 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           pluralizedLabel={props.pluralizedLabel}
           containerClassNames={containerClassNames}
           showLabel={false}
+        />
+      );
+    case "Select":
+      return (
+        <FormikSelect
+          name={name}
+          options={props.options}
+          label={label}
+          containerClassNames={containerClassNames}
+          showLabel={false}
+          allowBlank={props.allowBlank || false}
         />
       );
     default:
