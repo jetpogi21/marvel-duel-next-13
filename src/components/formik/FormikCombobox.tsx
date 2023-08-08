@@ -15,7 +15,6 @@ export interface FormikComboboxProp {
   setArrayTouched?: () => void;
   onUpdate?: () => void;
   helperText?: string;
-  pluralizedLabel?: string;
   containerClassNames?: ClassValue[];
   showLabel: boolean;
   [key: string]: unknown;
@@ -30,7 +29,6 @@ export const FormikCombobox = ({
   setArrayTouched,
   onUpdate,
   helperText,
-  pluralizedLabel = `${label}s`,
   containerClassNames,
   showLabel = true,
   ...props
@@ -50,7 +48,6 @@ export const FormikCombobox = ({
         }}
         list={items}
         caption={label}
-        pluralizedCaption={pluralizedLabel}
       />
       {helperText && (
         <span className="mt-1 text-xs font-bold text-muted-foreground">

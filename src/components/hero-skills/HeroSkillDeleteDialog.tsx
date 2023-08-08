@@ -11,31 +11,76 @@ import {
 } from "@/components/ui/Dialog";
 import { useHeroSkillDeleteDialog } from "@/hooks/hero-skills/useHeroSkillDeleteDialog";
 import {
-  MODEL_NAME,
-  PLURALIZED_MODEL_NAME,
+  PLURALIZED_VERBOSE_MODEL_NAME,
+  VERBOSE_MODEL_NAME,
 } from "@/utils/constants/HeroSkillConstants";
 import { useEffect, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import { HeroSkillDeletePayload } from "@/interfaces/HeroSkillInterfaces";
+import axiosClient from "@/utils/api";
+import { useMutation } from "@tanstack/react-query";
+import { useHeroSkillStore } from "@/hooks/hero-skills/useHeroSkillStore";
 
-export function HeroSkillDeleteDialog() {
+export function HeroSkillDeleteDialog({ formik }: { formik: any }) {
   const [mounted, setMounted] = useState(false);
-  const [isDialogLoading, recordsToDelete, setRecordsToDelete, mutate] =
-    useHeroSkillDeleteDialog((state) => [
-      state.isDialogLoading,
-      state.recordsToDelete,
-      state.setRecordsToDelete,
-      state.mutate,
-    ]);
+  const [
+    isDialogLoading,
+    recordsToDelete,
+    setRecordsToDelete,
+    setIsDialogLoading,
+  ] = useHeroSkillDeleteDialog((state) => [
+    state.isDialogLoading,
+    state.recordsToDelete,
+    state.setRecordsToDelete,
+    state.setIsDialogLoading,
+  ]);
+
+  const [currentData, resetRowSelection] = useHeroSkillStore((state) => [
+    state.currentData,
+    state.resetRowSelection,
+  ]);
+
+  const deleteHeroSkills = async (payload: HeroSkillDeletePayload) => {
+    const { data } = (await axiosClient({
+      url: "hero-skills",
+      method: "delete",
+      data: payload,
+    })) as { data: { recordsDeleted: number } };
+
+    return data;
+  };
+
+  const { mutate } = useMutation({
+    mutationFn: deleteHeroSkills,
+    onMutate: () => {
+      setIsDialogLoading(true);
+    },
+    onSuccess: (data) => {
+      formik.setFieldValue(
+        "HeroSkills",
+        currentData.filter(
+          (item) => !recordsToDelete.includes(item.id.toString())
+        )
+      );
+    },
+    onSettled: () => {
+      setRecordsToDelete([]);
+      setIsDialogLoading(false);
+      resetRowSelection();
+    },
+  });
 
   //state transformation
   const open = recordsToDelete.length > 0;
   const s = recordsToDelete.length > 1 ? "s" : "";
   const caption =
-    recordsToDelete.length > 1 ? PLURALIZED_MODEL_NAME : MODEL_NAME;
+    recordsToDelete.length > 1
+      ? PLURALIZED_VERBOSE_MODEL_NAME
+      : VERBOSE_MODEL_NAME;
 
   const mutateHeroSkill = () => {
-    mutate && mutate({ HeroSkills: [], deletedHeroSkills: recordsToDelete });
+    mutate && mutate({ deletedHeroSkills: recordsToDelete });
   };
 
   useEffect(() => {

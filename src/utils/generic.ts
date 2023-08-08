@@ -87,7 +87,8 @@ export const genericGetOneBySlug = async (
   try {
     findOptions.where = { slug: id };
     const data = await ModelObject.findOne(findOptions);
-    return returnJSONResponse({ status: "success", data });
+
+    return returnJSONResponse(data);
   } catch (err) {
     return handleSequelizeError(err);
   }

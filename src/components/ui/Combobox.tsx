@@ -21,16 +21,9 @@ interface Combobox {
   onChange?: (internalValue: string) => void;
   list: BasicModel[];
   caption: string;
-  pluralizedCaption?: string;
 }
 
-const Combobox: React.FC<Combobox> = ({
-  value,
-  onChange,
-  list,
-  caption,
-  pluralizedCaption = `${caption}s`,
-}) => {
+const Combobox: React.FC<Combobox> = ({ value, onChange, list, caption }) => {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const filteredOptions = list.filter((item) =>
@@ -57,14 +50,14 @@ const Combobox: React.FC<Combobox> = ({
           {/* Display selected internalValues or default text */}
           {value
             ? list.find((item) => item.id.toString() === value.toString())?.name
-            : `Select ${pluralizedCaption}...`}
+            : `Select ${caption}`}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 PopoverContent">
         <Command shouldFilter={false}>
           <CommandInput
-            placeholder={`Search ${caption}...`}
+            placeholder={`Search ${caption}`}
             value={input}
             onValueChange={handeInputChange}
           />

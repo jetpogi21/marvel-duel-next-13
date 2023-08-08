@@ -153,3 +153,107 @@ export function buildAndConditions(
     },
   };
 }
+
+export const appendAndFilters = (
+  andFilters: any[],
+  sort: string,
+  sortField: string,
+  primaryKey: string,
+  cursor: string
+) => {
+  //Use less than if the sort is descending
+  const cursorCondition = sort.includes("-") ? Op.lt : Op.gt;
+  //If sortField is not primary key then do dual cursor
+  if (sortField !== primaryKey) {
+    const cursorArray = splitWordByLastHyphen(cursor);
+
+    if (cursorArray[0] === "") {
+      if (cursorCondition === Op.gt) {
+        andFilters.push({
+          [Op.or]: {
+            [sortField]: {
+              [Op.not]: null,
+            },
+            [Op.and]: {
+              [sortField]: { [Op.is]: null },
+              [primaryKey]: {
+                [Op.gt]: cursorArray[1],
+              },
+            },
+          },
+        });
+      } else {
+        andFilters.push({
+          [Op.or]: {
+            [Op.and]: {
+              [sortField]: { [Op.is]: null },
+              [primaryKey]: {
+                [Op.gt]: cursorArray[1],
+              },
+            },
+          },
+        });
+      }
+    } else {
+      if (cursorCondition === Op.gt) {
+        andFilters.push({
+          [Op.or]: {
+            [sortField]: {
+              [cursorCondition]: cursorArray[0],
+            },
+            [Op.and]: {
+              [sortField]: cursorArray[0],
+              [primaryKey]: {
+                [Op.gt]: cursorArray[1],
+              },
+            },
+          },
+        });
+      } else {
+        andFilters.push({
+          [Op.or]: {
+            [sortField]: {
+              [Op.or]: {
+                [Op.is]: null,
+                [cursorCondition]: cursorArray[0],
+              },
+            },
+            [Op.and]: {
+              [sortField]: cursorArray[0],
+              [primaryKey]: {
+                [Op.gt]: cursorArray[1],
+              },
+            },
+          },
+        });
+      }
+    }
+  } else {
+    andFilters.push({
+      [sortField]: {
+        [cursorCondition]: cursor,
+      },
+    });
+  }
+};
+
+export const getCursor = (
+  data: any[],
+  sortField: string,
+  primaryKey: string
+) => {
+  if (data && data.length > 0) {
+    //The cursor will have 2 items since there will be 2 cursors to be made
+    if (sortField !== primaryKey) {
+      if (data[data.length - 1][sortField] === null) {
+        return `-${data[data.length - 1][primaryKey].toString()}`;
+      } else {
+        return `${data[data.length - 1][sortField].toString()}-${data[
+          data.length - 1
+        ][primaryKey].toString()}`;
+      }
+    } else {
+      return `${data[data.length - 1][sortField].toString()}`;
+    }
+  }
+};

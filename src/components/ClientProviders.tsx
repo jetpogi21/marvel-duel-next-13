@@ -1,9 +1,9 @@
 "use client";
-import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
-import { useState, useEffect, FC } from "react";
+import { FC } from "react";
 import { Toaster } from "@/components/ui/Toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { toast } from "@/hooks/use-toast";
 
 interface ClientProvidersProps {
   children: React.ReactNode;
@@ -11,7 +11,21 @@ interface ClientProvidersProps {
 
 const ClientProviders: FC<ClientProvidersProps> = ({ children }) => {
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { staleTime: 60 * 1000 } },
+    defaultOptions: {
+      queries: { staleTime: 60 * 1000 },
+      mutations: {
+        onError: (error) => {
+          const responseText =
+            //@ts-ignore
+            error?.response?.statusText || "Something went wrong with the app";
+          toast({
+            description: responseText,
+            variant: "destructive",
+            duration: 2000,
+          });
+        },
+      },
+    },
   });
 
   return (

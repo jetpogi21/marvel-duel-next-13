@@ -10,11 +10,12 @@ import { RefObject } from "react";
 
 // Define a custom type for the column definition meta
 type ColumnDefMeta = {
-  type: "Textarea" | "Checkbox" | "Input" | "Select" | "Combobox";
+  type: "Textarea" | "Checkbox" | "Input" | "Select" | "ComboBox";
   options: BasicModel[];
   listName: string;
   isNumeric: boolean;
   isWholeNumber: boolean;
+  label: string;
 };
 
 export const EditableTableCell = <TData, TValue>(
@@ -30,6 +31,7 @@ export const EditableTableCell = <TData, TValue>(
   const listName = (column.columnDef.meta as ColumnDefMeta).listName;
   const isNumeric = (column.columnDef.meta as ColumnDefMeta).isNumeric;
   const isWholeNumber = (column.columnDef.meta as ColumnDefMeta).isWholeNumber;
+  const label = (column.columnDef.meta as ColumnDefMeta).label;
 
   const {
     name,
@@ -69,6 +71,7 @@ export const EditableTableCell = <TData, TValue>(
       return (
         <FormikTextArea
           {...commonProps}
+          placeholder={label}
           inputRef={
             dataRows === index + 1 && column.id === firstFieldInForm
               ? (ref as RefObject<HTMLTextAreaElement>)
@@ -93,9 +96,11 @@ export const EditableTableCell = <TData, TValue>(
         <FormikSelect
           {...commonProps}
           options={options}
+          showLabel={false}
+          allowBlank={false}
         />
       );
-    case "Combobox":
+    case "ComboBox":
       const { data } = useHeroList();
 
       return (
@@ -103,13 +108,14 @@ export const EditableTableCell = <TData, TValue>(
           {...commonProps}
           freeSolo={false}
           items={data || []}
-          label=""
+          label={label}
           showLabel={false}
         />
       );
     default:
       return (
         <FormikInput
+          placeholder={label}
           isNumeric={isNumeric}
           wholeNumberOnly={isWholeNumber}
           {...commonProps}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { JSONResponse, QueryResult } from "../interfaces/interface";
 import { URLSearchParams } from "url";
+import slugify from "slugify";
 
 //returns ["Field ASC","Field2 DESC"]
 export const getSort = (
@@ -399,3 +400,11 @@ export function removeSucceedingItems<T>(arr: T[], index: number): T[] {
 
   return arr.slice(0, index + 1);
 }
+
+export const slugifyString = (value: string) => {
+  return slugify(value, {
+    lower: true,
+    remove: /[*+~.()'"!:@]/g,
+    replacement: "-",
+  });
+};

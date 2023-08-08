@@ -7,7 +7,11 @@ const HeroSkillSchema = Yup.object().shape({
   type: Yup.string()
     .required("Type is a required field.")
     .oneOf(["Active", "Passive"], "Type is invalid"),
-  cost: Yup.number().nullable(),
+  cost: Yup.number()
+    .nullable()
+    .transform((value, originalValue) =>
+      originalValue && originalValue.trim() !== "" ? value : null
+    ),
   description: Yup.string().required("Description is a required field."),
   heroId: Yup.number().required("Hero is a required field."),
 });

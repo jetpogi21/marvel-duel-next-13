@@ -90,21 +90,23 @@ export const FormikInput: React.FC<FormikInputProps> = ({
     wholeNumberOnly: boolean,
     allowNegative: boolean
   ) => {
-    const charCode = e.key.charCodeAt(0);
+    const key = e.code;
 
-    // Allow numbers 0-9
-    if (charCode >= 48 && charCode <= 57) {
+    // Allow numbers 0-9 (main keyboard and NumKeypad)
+    if (/Digit\d/.test(key) || /Numpad\d/.test(key)) {
       return true;
     }
 
     // Allow backspace, tab, enter, escape, arrow keys, home, end, and minus (-)
     if (
-      charCode === 8 || // Backspace
-      charCode === 9 || // Tab
-      charCode === 13 || // Enter
-      charCode === 27 || // Escape
-      (charCode >= 35 && charCode <= 40) || // Home, End, Arrow keys
-      (allowNegative && charCode === 45) // Minus (-) if allowed
+      key === "Backspace" ||
+      key === "Tab" ||
+      key === "Enter" ||
+      key === "Escape" ||
+      key.startsWith("Arrow") ||
+      key === "Home" ||
+      key === "End" ||
+      (allowNegative && key === "Minus") // Minus (-) if allowed
     ) {
       return true;
     }
@@ -113,13 +115,13 @@ export const FormikInput: React.FC<FormikInputProps> = ({
     if (
       allowNegative &&
       e.currentTarget.selectionStart === 0 &&
-      charCode === 45
+      key === "Minus"
     ) {
       return true;
     }
 
     // Prevent the period (decimal point) if wholeNumberOnly is true
-    if (wholeNumberOnly && charCode === 46) {
+    if (wholeNumberOnly && key === "Period") {
       return false;
     }
 
@@ -163,6 +165,7 @@ export const FormikInput: React.FC<FormikInputProps> = ({
     <div className={cn("flex flex-col w-full gap-1.5", containerClassNames)}>
       {!!label && <Label htmlFor={props.name}>{label}</Label>}
       <Input
+        className={cn({ "text-right": isNumeric })}
         type={inputType}
         ref={propInputRef || inputRef}
         onChange={handleChange}

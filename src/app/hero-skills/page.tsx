@@ -20,7 +20,6 @@ const HeroSkills: React.FC = () => {
           <HeroSkillTable />
         </div>
       </div>
-      <HeroSkillDeleteDialog />
     </div>
   );
 };
