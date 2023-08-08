@@ -55,7 +55,7 @@ export interface DeckDeletePayload {
 //Use for single form (with children)
 //The Related Models will be replaced by the Payload version
 export interface DeckFormUpdatePayload
-  extends Omit<DeckFormikShape, "touched">,
+  extends Omit<DeckFormikShape, "touched" | "index">,
     HeroSkillUpdatePayload {}
 
 export interface DeckFormikFilter {
