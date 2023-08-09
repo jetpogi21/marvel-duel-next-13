@@ -40,6 +40,7 @@ export const EditableTableCell = <TData, TValue>(
     ref,
     firstFieldInForm,
     lastFieldInForm,
+    editable,
   } = table.options.meta || {};
 
   const index = row.index;

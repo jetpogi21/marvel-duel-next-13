@@ -11,6 +11,7 @@ export function getSortedValue(
     const isSortValid =
       deckAttributes.includes(sort) ||
       deckAttributes.includes(sort.substring(1));
+
     return isSortValid ? sort : DEFAULT_SORT_BY;
   } else {
     return DEFAULT_SORT_BY;
@@ -26,18 +27,21 @@ export function getCursorString(
   PRIMARY_KEY: string,
   data: DataItem[]
 ): string {
-  let cursor: string;
-
-  if (sortField !== PRIMARY_KEY) {
-    //@ts-ignore
-    cursor = `${data[data.length - 1][sortField].toString()}-${data[
-      data.length - 1
-    ][PRIMARY_KEY].toString()}`;
-  } else {
-    cursor = `${data[data.length - 1][sortField].toString()}`;
+  if (data && data.length > 0) {
+    if (sortField !== PRIMARY_KEY) {
+      if (data[data.length - 1][sortField] === null) {
+        return `-${data[data.length - 1][PRIMARY_KEY].toString()}`;
+      } else {
+        return `${data[data.length - 1][sortField].toString()}-${data[
+          data.length - 1
+        ][PRIMARY_KEY].toString()}`;
+      }
+    } else {
+      return `${data[data.length - 1][sortField].toString()}`;
+    }
   }
 
-  return cursor;
+  return "";
 }
 
 export function addCursorFilterToQuery(
@@ -257,3 +261,38 @@ export const getCursor = (
     }
   }
 };
+
+export function getDatabaseFieldName(key: string, COLUMNS: any): string {
+  let sortField = key.includes("-") ? key.substring(1) : key;
+  const column = COLUMNS[sortField];
+
+  if (column?.db_name) {
+    return column.db_name;
+  }
+  return sortField;
+}
+
+export function getColumnKeyByDbName(fieldName: string, COLUMNS: any) {
+  for (const key in COLUMNS) {
+    if (COLUMNS[key].db_name === fieldName) {
+      return key;
+    }
+  }
+  return fieldName;
+}
+
+export function getMappedKeys(columns: {
+  [key: string]: { type: string; db_name?: string };
+}): string[] {
+  const mappedKeys: string[] = [];
+
+  for (const key in columns) {
+    if (columns.hasOwnProperty(key)) {
+      const column = columns[key];
+      const columnName = column.db_name || key;
+      mappedKeys.push(columnName);
+    }
+  }
+
+  return mappedKeys;
+}
