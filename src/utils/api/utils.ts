@@ -53,16 +53,37 @@ export function addCursorFilterToQuery(
   filters: string[]
 ): void {
   const cursorCondition = sort.includes("-") ? "<" : ">";
+  const [cursorArray0, cursorArray1] = splitWordByLastHyphen(cursor);
+
+  const addFilter = (
+    condition: string,
+    clause?: string,
+    clauseReplacements?: Record<string, any>
+  ) => {
+    filters.push(clause ? `(${clause})` : condition);
+    if (clauseReplacements) {
+      Object.assign(replacements, clauseReplacements);
+    }
+  };
+
   if (sortField !== PRIMARY_KEY) {
-    const cursorArray = splitWordByLastHyphen(cursor); // Make sure to define splitWordByLastHyphen function
-    filters.push(
-      `(${sortField} ${cursorCondition} :cursorArray0 OR (${sortField} = :cursorArray0 AND ${PRIMARY_KEY} > :cursorArray1))`
-    );
-    replacements["cursorArray0"] = cursorArray[0];
-    replacements["cursorArray1"] = cursorArray[1];
+    if (!cursorArray0) {
+      addFilter(
+        `${sortField} IS NULL AND ${PRIMARY_KEY} > :cursorArray1`,
+        cursorCondition === "<"
+          ? `(${sortField} IS NULL AND ${PRIMARY_KEY} > :cursorArray1)`
+          : `NOT ${sortField} IS NULL OR (${sortField} IS NULL AND ${PRIMARY_KEY} > :cursorArray1)`,
+        { cursorArray1 }
+      );
+    } else {
+      addFilter(
+        `(${sortField} ${cursorCondition} :cursorArray0 OR (${sortField} = :cursorArray0 AND ${PRIMARY_KEY} > :cursorArray1))`,
+        undefined,
+        { cursorArray0, cursorArray1 }
+      );
+    }
   } else {
-    filters.push(`${sortField} ${cursorCondition} :cursor`);
-    replacements["cursor"] = cursor;
+    addFilter(`${sortField} ${cursorCondition} :cursor`, undefined, { cursor });
   }
 }
 
