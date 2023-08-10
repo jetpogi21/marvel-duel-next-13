@@ -208,7 +208,7 @@ export const CardColumns: ColumnDef<CardModel>[] = [
       return cell.table.options.meta?.editable ? (
         <EditableTableCell {...cell} />
       ) : (
-        cell.getValue()
+        cell.row.original.Deck.name
       );
     },
     meta: {
