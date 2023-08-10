@@ -260,7 +260,11 @@ function getCardSQL(
   //Count should be pre-cursor
   //This part would return the count SQL
   sql.fields = [`COUNT(DISTINCT ${PRIMARY_KEY}) AS count`];
+  if (filters.length > 0) {
+    sql.filter = filters.join(" AND ");
+  }
   const countSQL = sql.sql();
+  sql.filter = "";
 
   sql.orderBy = getSort(sort, DEFAULT_SORT_BY, PRIMARY_KEY);
   if (cursor) {
