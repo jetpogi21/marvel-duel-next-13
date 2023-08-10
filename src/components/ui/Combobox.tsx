@@ -78,7 +78,8 @@ const Combobox: React.FC<Combobox> = ({ value, onChange, list, caption }) => {
                   className={cn(
                     "mr-2 h-4 w-4",
                     // Check if current internalValue is in the array
-                    value && value.toString() === item.id.toString()
+                    value &&
+                      value.toString() === item.id.toString().toLowerCase()
                       ? "opacity-100"
                       : "opacity-0"
                   )}
