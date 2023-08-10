@@ -234,6 +234,10 @@ const CardDataTable: React.FC = () => {
                         style={{
                           width: `${customWidth}px`,
                         }}
+                        align={
+                          (header.column.columnDef.meta as any)?.alignment ||
+                          "left"
+                        }
                       >
                         {header.isPlaceholder
                           ? null
@@ -255,7 +259,10 @@ const CardDataTable: React.FC = () => {
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell
+                        key={cell.id}
+                        align={(cell.column.columnDef.meta as any)?.alignment}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

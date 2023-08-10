@@ -24,11 +24,10 @@ interface SwitchProps extends ControlProps {
   type: "Switch";
 }
 
-interface ComboboxProps extends ControlProps {
-  type: "Combobox";
+interface ComboBoxProps extends ControlProps {
+  type: "ComboBox";
   options: BasicModel[];
   showLabel: boolean;
-  pluralizedLabel: string;
 }
 
 interface SelectProps extends ControlProps {
@@ -47,7 +46,7 @@ type FormikControlProps =
   | FacetedControlProps
   | TextProps
   | SwitchProps
-  | ComboboxProps
+  | ComboBoxProps
   | SelectProps;
 
 const FormikControl: React.FC<FormikControlProps> = (props) => {
@@ -78,13 +77,12 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           containerClassNames={containerClassNames}
         />
       );
-    case "Combobox":
+    case "ComboBox":
       return (
         <FormikCombobox
           name={name}
           items={props.options}
           label={label}
-          pluralizedLabel={props.pluralizedLabel}
           containerClassNames={containerClassNames}
           showLabel={false}
         />

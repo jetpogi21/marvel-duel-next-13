@@ -49,7 +49,9 @@ const Combobox: React.FC<Combobox> = ({ value, onChange, list, caption }) => {
         >
           {/* Display selected internalValues or default text */}
           {value
-            ? list.find((item) => item.id.toString() === value.toString())?.name
+            ? list.find(
+                (item) => item.id.toString().toLowerCase() === value.toString()
+              )?.name
             : `Select ${caption}`}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
