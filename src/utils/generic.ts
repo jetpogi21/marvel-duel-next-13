@@ -37,7 +37,9 @@ export const genericGetAll = async <T extends ModelStatic<any>>(
 ) => {
   try {
     const data = await ModelObject.findAll(options);
-    return returnJSONResponse({ status: "success", data });
+    return NextResponse.json({
+      rows: data,
+    });
   } catch (err) {
     return handleSequelizeError(err);
   }

@@ -42,8 +42,6 @@ export const FormikFacetedControl: React.FC<FormikFacetedControlProps> = ({
   const hasError = meta.touched && meta.error;
 
   const handleValueChange = (newValue: string[]) => {
-    console.log(newValue);
-
     setValue(newValue);
     setArrayTouched && setArrayTouched();
     submitOnChange && submitForm();

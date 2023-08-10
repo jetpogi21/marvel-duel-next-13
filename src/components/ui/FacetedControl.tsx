@@ -62,7 +62,7 @@ export const FacetedControl: React.FC<FacetedControlProps> = ({
         <Button
           variant="outline"
           size="sm"
-          className="h-8 border-dashed"
+          className="h-8 min-w-full border-dashed"
         >
           <PlusCircleIcon className="w-4 h-4 mr-2" />
           {title}
