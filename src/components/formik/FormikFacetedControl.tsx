@@ -19,6 +19,7 @@ export interface FormikFacetedControlProps extends ButtonProps {
   submitOnChange?: boolean;
   containerClassNames?: ClassValue[];
   options: BasicModel[];
+  limit?: number;
 }
 
 export const FormikFacetedControl: React.FC<FormikFacetedControlProps> = ({
@@ -60,6 +61,7 @@ export const FormikFacetedControl: React.FC<FormikFacetedControlProps> = ({
         onValueChange={handleValueChange}
         options={options}
         title={label}
+        limit={props.limit || 4}
       />
       {helperText && (
         <span className="mt-1 text-xs font-bold text-muted-foreground">

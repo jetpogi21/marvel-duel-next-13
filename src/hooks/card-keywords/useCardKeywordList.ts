@@ -2,17 +2,21 @@
 "use client";
 import { GetCardKeywordsResponse } from "@/interfaces/CardKeywordInterfaces";
 import { CardKeywordSearchParams } from "@/interfaces/CardKeywordInterfaces";
+import { BasicModel } from "@/interfaces/GeneralInterfaces";
 import axiosClient from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 const getCardKeywords = async () => {
-  const { data } = await axiosClient.get<GetCardKeywordsResponse>(`card-keywords`, {
-    params: {
-      fetchCount: "false",
-      simpleOnly: "true",
-    } as Partial<CardKeywordSearchParams>,
-  });
+  const { data } = await axiosClient.get<GetCardKeywordsResponse>(
+    `card-keywords`,
+    {
+      params: {
+        fetchCount: "false",
+        simpleOnly: "true",
+      } as Partial<CardKeywordSearchParams>,
+    }
+  );
 
   return data.rows.map((item) => ({
     id: item.id,
@@ -20,7 +24,11 @@ const getCardKeywords = async () => {
   }));
 };
 
-const useCardKeywordList = () => {
+interface UseListProps {
+  placeholderData?: BasicModel[];
+}
+
+const useCardKeywordList = (prop?: UseListProps) => {
   //local states
   const [mounted, setMounted] = useState(false);
 
@@ -28,6 +36,7 @@ const useCardKeywordList = () => {
     queryKey: ["cardKeyword-list"],
     queryFn: getCardKeywords,
     enabled: mounted,
+    placeholderData: prop?.placeholderData,
   });
 
   useEffect(() => {

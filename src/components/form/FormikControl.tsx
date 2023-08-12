@@ -4,9 +4,10 @@ import { FormikFacetedControl } from "@/components/formik/FormikFacetedControl";
 import { FormikInput } from "@/components/formik/FormikInput";
 import { FormikSelect } from "@/components/formik/FormikSelect";
 import { FormikSwitch } from "@/components/formik/FormikSwitch";
+import { FormikTextArea } from "@/components/formik/FormikTextArea";
 import { BasicModel } from "@/interfaces/GeneralInterfaces";
 import { ClassValue } from "clsx";
-import React from "react";
+import React, { RefObject } from "react";
 
 interface ControlProps {
   name: string;
@@ -18,6 +19,16 @@ interface ControlProps {
 
 interface TextProps extends ControlProps {
   type: "Text";
+  inputRef?: RefObject<any> | undefined;
+  setFocusOnLoad?: boolean;
+}
+
+interface TextareaProps extends ControlProps {
+  type: "Textarea";
+}
+
+interface WholeNumberProps extends ControlProps {
+  type: "WholeNumber";
 }
 
 interface SwitchProps extends ControlProps {
@@ -40,6 +51,7 @@ interface SelectProps extends ControlProps {
 interface FacetedControlProps extends ControlProps {
   type: "FacetedControl";
   options: BasicModel[];
+  limit?: number;
 }
 
 type FormikControlProps =
@@ -47,7 +59,9 @@ type FormikControlProps =
   | TextProps
   | SwitchProps
   | ComboBoxProps
-  | SelectProps;
+  | SelectProps
+  | WholeNumberProps
+  | TextareaProps;
 
 const FormikControl: React.FC<FormikControlProps> = (props) => {
   const {
@@ -75,6 +89,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           options={props.options}
           label={label}
           containerClassNames={containerClassNames}
+          limit={props.limit || 4}
         />
       );
     case "ComboBox":
@@ -84,7 +99,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           items={props.options}
           label={label}
           containerClassNames={containerClassNames}
-          showLabel={false}
+          showLabel={props.showLabel}
         />
       );
     case "Select":
@@ -94,8 +109,26 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           options={props.options}
           label={label}
           containerClassNames={containerClassNames}
-          showLabel={false}
+          showLabel={props.showLabel}
           allowBlank={props.allowBlank || false}
+        />
+      );
+    case "Textarea":
+      return (
+        <FormikTextArea
+          name={name}
+          label={label}
+          containerClassNames={containerClassNames}
+        />
+      );
+    case "WholeNumber":
+      return (
+        <FormikInput
+          name={name}
+          label={label}
+          isNumeric={true}
+          wholeNumberOnly={true}
+          containerClassNames={containerClassNames}
         />
       );
     default:
@@ -106,6 +139,8 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           submitOnChange={submitOnChange}
           placeholder={placeholder}
           containerClassNames={containerClassNames}
+          inputRef={props.inputRef}
+          setFocusOnLoad={props.setFocusOnLoad}
         />
       );
   }

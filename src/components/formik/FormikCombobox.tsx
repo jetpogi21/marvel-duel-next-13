@@ -40,7 +40,7 @@ export const FormikCombobox = ({
   const hasError = meta.touched && meta.error;
 
   return (
-    <div className={cn("flex w-full", containerClassNames)}>
+    <div className={cn("flex flex-col w-full gap-1.5", containerClassNames)}>
       {showLabel && <Label htmlFor={props.name}>{label}</Label>}
       <Combobox
         value={fieldValue}

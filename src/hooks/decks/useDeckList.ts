@@ -2,6 +2,7 @@
 "use client";
 import { GetDecksResponse } from "@/interfaces/DeckInterfaces";
 import { DeckSearchParams } from "@/interfaces/DeckInterfaces";
+import { BasicModel } from "@/interfaces/GeneralInterfaces";
 import axiosClient from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -20,7 +21,11 @@ const getDecks = async () => {
   }));
 };
 
-const useDeckList = () => {
+interface UseListProps {
+  placeholderData?: BasicModel[];
+}
+
+const useDeckList = (prop?: UseListProps) => {
   //local states
   const [mounted, setMounted] = useState(false);
 
@@ -28,6 +33,7 @@ const useDeckList = () => {
     queryKey: ["deck-list"],
     queryFn: getDecks,
     enabled: mounted,
+    placeholderData: prop?.placeholderData,
   });
 
   useEffect(() => {

@@ -408,3 +408,17 @@ export const slugifyString = (value: string) => {
     replacement: "-",
   });
 };
+
+export function convertArrayItemsToStrings(
+  inputArray: number[] | string[]
+): string[] {
+  // Create a new array to hold the converted strings
+  const newArray: string[] = [];
+
+  // Iterate through the input array and convert each item to a string
+  for (const item of inputArray) {
+    newArray.push(String(item));
+  }
+
+  return newArray;
+}

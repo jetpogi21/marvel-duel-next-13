@@ -165,7 +165,7 @@ export const FormikInput: React.FC<FormikInputProps> = ({
     <div className={cn("flex flex-col w-full gap-1.5", containerClassNames)}>
       {!!label && <Label htmlFor={props.name}>{label}</Label>}
       <Input
-        className={cn({ "text-right": isNumeric })}
+        className={cn({ "text-right pr-2": isNumeric })}
         type={inputType}
         ref={propInputRef || inputRef}
         onChange={handleChange}

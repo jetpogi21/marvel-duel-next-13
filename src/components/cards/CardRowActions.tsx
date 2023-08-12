@@ -75,13 +75,13 @@ export function CardRowActions<TData, TValue>({
           <DropdownMenuItem
             onSelect={() => {
               setOpen(false);
-              deleteRow(index);
+              deleteRow && deleteRow(index);
             }}
           >
             Delete
           </DropdownMenuItem>
           <Link href={`/cards/${slug}`}>
-            <DropdownMenuItem>Edit/View Skills</DropdownMenuItem>
+            <DropdownMenuItem>Edit/View Card Details</DropdownMenuItem>
           </Link>
         </DropdownMenuContent>
       </DropdownMenu>

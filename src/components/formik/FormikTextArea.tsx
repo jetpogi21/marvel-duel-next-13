@@ -12,6 +12,8 @@ import {
 } from "react";
 import _ from "lodash";
 import { Textarea, TextareaProps } from "@/components/ui/Textarea";
+import { cn } from "@/lib/utils";
+import { ClassValue } from "clsx";
 
 export interface FormikTextAreaProps extends TextareaProps {
   label?: string;
@@ -20,10 +22,12 @@ export interface FormikTextAreaProps extends TextareaProps {
   setArrayTouched?: () => void;
   onKeyDown?: (e: React.KeyboardEvent) => void;
   inputRef?: RefObject<HTMLTextAreaElement> | undefined;
+  containerClassNames?: ClassValue[];
   helperText?: string;
 }
 
 export const FormikTextArea: React.FC<FormikTextAreaProps> = ({
+  containerClassNames = "",
   label = "",
   setArrayTouched,
   setFocusOnLoad = false,
@@ -74,7 +78,7 @@ export const FormikTextArea: React.FC<FormikTextAreaProps> = ({
   }, [inputRef, setFocusOnLoad]);
 
   return (
-    <div className="grid w-full gap-1.5">
+    <div className={cn("flex flex-col w-full gap-1.5", containerClassNames)}>
       {!!label && <Label htmlFor={props.name}>{label}</Label>}
       <Textarea
         ref={propInputRef || inputRef}
