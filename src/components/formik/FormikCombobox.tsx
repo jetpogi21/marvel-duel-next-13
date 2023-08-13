@@ -35,7 +35,6 @@ export const FormikCombobox = ({
 }: FormikComboboxProp) => {
   const [field, meta, { setValue }] = useField(props);
   const fieldValue = field.value;
-  console.log(fieldValue);
 
   const hasError = meta.touched && meta.error;
 

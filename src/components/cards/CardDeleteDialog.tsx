@@ -36,10 +36,13 @@ export function CardDeleteDialog() {
     state.setIsDialogLoading,
   ]);
 
-  const [currentData, resetRowSelection] = useCardStore((state) => [
-    state.currentData,
-    state.resetRowSelection,
-  ]);
+  const [currentData, resetRowSelection, setCurrentData] = useCardStore(
+    (state) => [
+      state.currentData,
+      state.resetRowSelection,
+      state.setCurrentData,
+    ]
+  );
 
   const deleteCards = async (payload: CardDeletePayload) => {
     const { data } = (await axiosClient({
@@ -56,7 +59,13 @@ export function CardDeleteDialog() {
     onMutate: () => {
       setIsDialogLoading(true);
     },
-
+    onSuccess: () => {
+      setCurrentData(
+        currentData.filter(
+          (item) => !recordsToDelete.includes(item.id.toString())
+        )
+      );
+    },
     onSettled: () => {
       setRecordsToDelete([]);
       setIsDialogLoading(false);

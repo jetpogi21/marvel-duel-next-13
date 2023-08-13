@@ -50,6 +50,7 @@ export const FormikSelect: React.FC<FormikSelectProps> = ({
   const { submitForm } = useFormikContext();
   const [field, meta, { setValue }] = useField(props.name);
   const fieldValue = field.value || "";
+  console.log(fieldValue);
   const [internalVal, setInternalVal] = useState(fieldValue);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -81,7 +82,9 @@ export const FormikSelect: React.FC<FormikSelectProps> = ({
         <Select
           onValueChange={handleChange}
           defaultValue={fieldValue}
-          value={fieldValue}
+          value={
+            typeof fieldValue === "number" ? fieldValue.toString() : fieldValue
+          }
         >
           <SelectTrigger>
             {fieldValue ? (
