@@ -22,7 +22,11 @@ import axiosClient from "@/utils/api";
 import { useMutation } from "@tanstack/react-query";
 import { useCardStore } from "@/hooks/cards/useCardStore";
 
-export function CardDeleteDialog() {
+interface CardDeleteDialogProps {
+  onSuccess?: () => void;
+}
+
+export function CardDeleteDialog(props: CardDeleteDialogProps) {
   const [mounted, setMounted] = useState(false);
   const [
     isDialogLoading,
@@ -65,6 +69,7 @@ export function CardDeleteDialog() {
           (item) => !recordsToDelete.includes(item.id.toString())
         )
       );
+      props.onSuccess && props.onSuccess();
     },
     onSettled: () => {
       setRecordsToDelete([]);
