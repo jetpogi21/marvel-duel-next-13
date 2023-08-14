@@ -88,6 +88,8 @@
 @layer utilities {
   .PopoverContent {
     width: var(--radix-popper-anchor-width);
+    max-height: calc(var(--radix-popover-content-available-height) - 20px);
+    overflow-y: auto;
   }
 }
 

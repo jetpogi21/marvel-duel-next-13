@@ -9,49 +9,50 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/Dialog";
-import { useCardUnityDeleteDialog } from "@/hooks/card-unities/useCardUnityDeleteDialog";
+import { useCardUnityCardDeleteDialog } from "@/hooks/card-unity-cards/useCardUnityCardDeleteDialog";
 import {
   PLURALIZED_VERBOSE_MODEL_NAME,
   VERBOSE_MODEL_NAME,
-} from "@/utils/constants/CardUnityConstants";
+} from "@/utils/constants/CardUnityCardConstants";
 import { useEffect, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
-import { CardUnityDeletePayload } from "@/interfaces/CardUnityInterfaces";
+import { CardUnityCardDeletePayload } from "@/interfaces/CardUnityCardInterfaces";
 import axiosClient from "@/utils/api";
 import { useMutation } from "@tanstack/react-query";
-import { useCardUnityStore } from "@/hooks/card-unities/useCardUnityStore";
+import { useCardUnityCardStore } from "@/hooks/card-unity-cards/useCardUnityCardStore";
 
-interface CardUnityDeleteDialogProps {
+interface CardUnityCardDeleteDialogProps {
   onSuccess?: () => void;
   formik?: any;
 }
 
-export function CardUnityDeleteDialog(props: CardUnityDeleteDialogProps) {
+export function CardUnityCardDeleteDialog(
+  props: CardUnityCardDeleteDialogProps
+) {
   const [mounted, setMounted] = useState(false);
   const [
     isDialogLoading,
     recordsToDelete,
     setRecordsToDelete,
     setIsDialogLoading,
-  ] = useCardUnityDeleteDialog((state) => [
+  ] = useCardUnityCardDeleteDialog((state) => [
     state.isDialogLoading,
     state.recordsToDelete,
     state.setRecordsToDelete,
     state.setIsDialogLoading,
   ]);
 
-  const [currentData, resetRowSelection, setCurrentData] = useCardUnityStore(
-    (state) => [
+  const [currentData, resetRowSelection, setCurrentData] =
+    useCardUnityCardStore((state) => [
       state.currentData,
       state.resetRowSelection,
       state.setCurrentData,
-    ]
-  );
+    ]);
 
-  const deleteCardUnities = async (payload: CardUnityDeletePayload) => {
+  const deleteCardUnityCards = async (payload: CardUnityCardDeletePayload) => {
     const { data } = (await axiosClient({
-      url: "card-unities",
+      url: "card-unity-cards",
       method: "delete",
       data: payload,
     })) as { data: { recordsDeleted: number } };
@@ -60,17 +61,17 @@ export function CardUnityDeleteDialog(props: CardUnityDeleteDialogProps) {
   };
 
   const { mutate } = useMutation({
-    mutationFn: deleteCardUnities,
+    mutationFn: deleteCardUnityCards,
     onMutate: () => {
       setIsDialogLoading(true);
     },
-    onSuccess: () => {
-      setCurrentData(
+    onSuccess: (data) => {
+      props.formik.setFieldValue(
+        "CardUnityCards",
         currentData.filter(
           (item) => !recordsToDelete.includes(item.id.toString())
         )
       );
-      props.onSuccess && props.onSuccess();
     },
     onSettled: () => {
       setRecordsToDelete([]);
@@ -87,8 +88,8 @@ export function CardUnityDeleteDialog(props: CardUnityDeleteDialogProps) {
       ? PLURALIZED_VERBOSE_MODEL_NAME
       : VERBOSE_MODEL_NAME;
 
-  const mutateCardUnity = () => {
-    mutate && mutate({ deletedCardUnities: recordsToDelete });
+  const mutateCardUnityCard = () => {
+    mutate && mutate({ deletedCardUnityCards: recordsToDelete });
   };
 
   useEffect(() => {
@@ -120,7 +121,7 @@ export function CardUnityDeleteDialog(props: CardUnityDeleteDialogProps) {
               variant={"destructive"}
               isLoading={isDialogLoading}
               onClick={() => {
-                mutateCardUnity();
+                mutateCardUnityCard();
               }}
             >
               Proceed

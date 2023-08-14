@@ -5,6 +5,7 @@ import { FormikSelect } from "@/components/formik/FormikSelect";
 import { FormikTextArea } from "@/components/formik/FormikTextArea";
 import useHeroList from "@/hooks/heroes/useHeroList";
 import { BasicModel } from "@/interfaces/GeneralInterfaces";
+import { useQuery } from "@tanstack/react-query";
 import { CellContext } from "@tanstack/react-table";
 import { RefObject } from "react";
 
@@ -12,7 +13,6 @@ import { RefObject } from "react";
 type ColumnDefMeta = {
   type: "Textarea" | "Checkbox" | "Input" | "Select" | "ComboBox";
   options: BasicModel[];
-  listName: string;
   isNumeric: boolean;
   isWholeNumber: boolean;
   label: string;
@@ -28,7 +28,6 @@ export const EditableTableCell = <TData, TValue>(
   // Use type assertion to access the column definition meta
   const type = (column.columnDef.meta as ColumnDefMeta).type;
   const options = (column.columnDef.meta as ColumnDefMeta).options;
-  const listName = (column.columnDef.meta as ColumnDefMeta).listName;
   const isNumeric = (column.columnDef.meta as ColumnDefMeta).isNumeric;
   const isWholeNumber = (column.columnDef.meta as ColumnDefMeta).isWholeNumber;
   const label = (column.columnDef.meta as ColumnDefMeta).label;
@@ -102,13 +101,11 @@ export const EditableTableCell = <TData, TValue>(
         />
       );
     case "ComboBox":
-      const { data } = useHeroList();
-
       return (
         <FormikCombobox
           {...commonProps}
           freeSolo={false}
-          items={data || []}
+          items={options || []}
           label={label}
           showLabel={false}
         />

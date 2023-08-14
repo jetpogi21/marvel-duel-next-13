@@ -75,7 +75,7 @@ export const genericGetOne = async (
 ) => {
   try {
     const data = await ModelObject.findByPk(id, options);
-    return returnJSONResponse({ status: "success", data });
+    return returnJSONResponse(data);
   } catch (err) {
     return handleSequelizeError(err);
   }

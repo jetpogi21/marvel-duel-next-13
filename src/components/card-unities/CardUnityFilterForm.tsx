@@ -109,7 +109,7 @@ const CardUnityFilterForm: React.FC = () => {
           type="ComboBox"
           showLabel={false}
           label="Card"
-          containerClassNames={["w-[150px]"]}
+          containerClassNames={["w-[200px]"]}
         />
         <Button
           type="button"

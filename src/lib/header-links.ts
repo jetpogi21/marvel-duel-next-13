@@ -6,4 +6,5 @@ export const links = [
   { id: 3, name: "Card Skills", href: "/card-skills" },
   { id: 4, name: "Card Keywords", href: "/card-keywords" },
   { id: 5, name: "Hero Skills", href: "/hero-skills" },
+  { id: 7, name: "Card Unities", href: "/card-unities" },
 ];

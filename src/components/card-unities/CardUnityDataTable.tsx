@@ -37,7 +37,7 @@ import React from "react";
 
 const CardUnityDataTable: React.FC = () => {
   //URL States
-  const { router, query, pathid } = useURL<CardUnitySearchParams>();
+  const { router, query, pathname } = useURL<CardUnitySearchParams>();
   const sort = query["sort"] || DEFAULT_SORT_BY;
 
   //Local states
@@ -168,7 +168,7 @@ const CardUnityDataTable: React.FC = () => {
       .join(",");
 
     const params = { ...query, sort: sortParams };
-    const newURL = `${pathid}?${encodeParams(params)}`;
+    const newURL = `${pathname}?${encodeParams(params)}`;
     router.push(newURL);
 
     resetRowSelection();
@@ -190,7 +190,7 @@ const CardUnityDataTable: React.FC = () => {
     manualSorting: true,
     enableMultiRowSelection: true,
     meta: {
-      id: PLURALIZED_MODEL_NAME,
+      name: PLURALIZED_MODEL_NAME,
       deleteRow,
       toggleRow,
       toggleSelectAllRow,
@@ -223,7 +223,7 @@ const CardUnityDataTable: React.FC = () => {
               buttonVariants({ variant: "secondary", size: "sm" }),
               "ml-auto"
             )}
-            href="/cards/new"
+            href="/card-unities/new"
           >
             Add New
           </Link>
