@@ -4,7 +4,7 @@ const nextConfig = {
     domains: ["images.pexels.com"],
   },
   experimental: {
-    serverComponentsExternalPackages: ["sequelize","@types/sequelize"],
+    serverComponentsExternalPackages: ["sequelize", "@types/sequelize"],
   },
 };
 

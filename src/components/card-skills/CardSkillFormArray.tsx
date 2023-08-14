@@ -75,7 +75,9 @@ const CardSkillFormArray: React.FC<CardSkillFormArrayProps> = ({ formik }) => {
     isLoading,
     isFetching,
     fetchNextPage,
-  } = useInfiniteQuery<GetCardSkillsResponse>(["cardSkills"], { enabled: false });
+  } = useInfiniteQuery<GetCardSkillsResponse>(["cardSkills"], {
+    enabled: false,
+  });
 
   //Transformations
   const sorting = getSorting(sort);

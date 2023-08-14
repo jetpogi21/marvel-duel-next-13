@@ -35,7 +35,8 @@ export function CardKeywordDeleteDialog() {
     recordsToDelete.length > 1 ? PLURALIZED_MODEL_NAME : MODEL_NAME;
 
   const mutateCardKeyword = () => {
-    mutate && mutate({ CardKeywords: [], deletedCardKeywords: recordsToDelete });
+    mutate &&
+      mutate({ CardKeywords: [], deletedCardKeywords: recordsToDelete });
   };
 
   useEffect(() => {

@@ -43,7 +43,9 @@ interface CardKeywordFormArrayProps {
   formik: FormikProps<{ CardKeywords: CardKeywordFormikShape[] }>;
 }
 
-const CardKeywordFormArray: React.FC<CardKeywordFormArrayProps> = ({ formik }) => {
+const CardKeywordFormArray: React.FC<CardKeywordFormArrayProps> = ({
+  formik,
+}) => {
   //URL States
   const { router, query, pathname } = useURL<CardKeywordSearchParams>();
   const sort = query["sort"] || DEFAULT_SORT_BY;
@@ -75,7 +77,9 @@ const CardKeywordFormArray: React.FC<CardKeywordFormArrayProps> = ({ formik }) =
     isLoading,
     isFetching,
     fetchNextPage,
-  } = useInfiniteQuery<GetCardKeywordsResponse>(["cardKeywords"], { enabled: false });
+  } = useInfiniteQuery<GetCardKeywordsResponse>(["cardKeywords"], {
+    enabled: false,
+  });
 
   //Transformations
   const sorting = getSorting(sort);
@@ -156,7 +160,9 @@ const CardKeywordFormArray: React.FC<CardKeywordFormArrayProps> = ({ formik }) =
 
   const toggleRow = (idx: number) => setRowSelection(idx);
   const toggleSelectAllRow = () => {
-    if (Object.keys(rowSelection).length === formik.values.CardKeywords.length) {
+    if (
+      Object.keys(rowSelection).length === formik.values.CardKeywords.length
+    ) {
       resetRowSelection();
     } else {
       setRowSelectionToAll(formik.values.CardKeywords.length);
@@ -247,7 +253,8 @@ const CardKeywordFormArray: React.FC<CardKeywordFormArrayProps> = ({ formik }) =
         <div className="flex items-center gap-4">
           <div className="text-sm">
             {cardKeywordTable.getFilteredSelectedRowModel().rows.length} of{" "}
-            {cardKeywordTable.getFilteredRowModel().rows.length} row(s) selected.
+            {cardKeywordTable.getFilteredRowModel().rows.length} row(s)
+            selected.
           </div>
           {hasSelected && (
             <Button
