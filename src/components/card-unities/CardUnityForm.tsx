@@ -40,11 +40,11 @@ import useCardList from "@/hooks/cards/useCardList";
 
 interface CardUnityFormProps {
   data: CardUnityModel | null;
-  slug: string;
+  id: string;
 }
 
 const CardUnityForm: React.FC<CardUnityFormProps> = (prop) => {
-  const { slug } = prop;
+  const { id } = prop;
   const { router, query, pathname } = useURL<CardUnitySearchParams>();
 
   //Local states
@@ -72,8 +72,8 @@ const CardUnityForm: React.FC<CardUnityFormProps> = (prop) => {
 
   //Tanstack queries
 
-  const { cardUnityMutation, cardUnityQuery } = useCardUnityQuery(slug, {
-    enabled: mounted && slug !== "new",
+  const { cardUnityMutation, cardUnityQuery } = useCardUnityQuery(id, {
+    enabled: mounted && id !== "new",
     initialData: prop.data,
   });
 
@@ -168,11 +168,11 @@ const CardUnityForm: React.FC<CardUnityFormProps> = (prop) => {
           formik.setFieldValue("id", data.id);
         }
 
-        if (data.slug) {
+        if (data.id) {
           window.history.pushState(
             {},
             "",
-            `${window.location.origin}/card-unities/${data.slug}`
+            `${window.location.origin}/card-unities/${data.id}`
           );
         }
 
@@ -265,7 +265,7 @@ const CardUnityForm: React.FC<CardUnityFormProps> = (prop) => {
           >
             Cancel
           </Button>
-          {slug !== "new" && (
+          {id !== "new" && (
             <Button
               type="button"
               size={"sm"}
