@@ -17,7 +17,7 @@ export const DeleteRowColumn = <TData, TValue>(
       type="button"
       size="sm"
       variant={"ghost"}
-      onClick={() => deleteRow(index)}
+      onClick={() => deleteRow && deleteRow(index)}
     >
       <Trash2 className="w-4 h-4" />
     </Button>
