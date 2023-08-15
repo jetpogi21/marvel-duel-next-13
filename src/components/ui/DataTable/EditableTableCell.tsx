@@ -47,10 +47,6 @@ export const EditableTableCell = <TData, TValue>(
 
   // Define a common function to handle the key down event
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== "Tab") {
-      setTouchedRows && setTouchedRows(row.index);
-    }
-
     if (e.key === "Tab") {
       if (dataRows === index + 1 && column.id === lastFieldInForm) {
         e.preventDefault();
@@ -58,7 +54,6 @@ export const EditableTableCell = <TData, TValue>(
       }
     }
   };
-
   // Define a common prop object for the formik components
   const commonProps = {
     name: controlName,
