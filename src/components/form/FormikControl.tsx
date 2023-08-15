@@ -15,6 +15,7 @@ interface ControlProps {
   submitOnChange?: boolean;
   placeholder?: string;
   containerClassNames?: ClassValue[];
+  disabled?: boolean;
 }
 
 interface TextProps extends ControlProps {
@@ -141,6 +142,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           containerClassNames={containerClassNames}
           inputRef={props.inputRef}
           setFocusOnLoad={props.setFocusOnLoad}
+          disabled={props.disabled}
         />
       );
   }

@@ -21,6 +21,7 @@ export interface FormikInputProps extends InputProps {
   isNumeric?: boolean;
   wholeNumberOnly?: boolean;
   allowNegative?: boolean;
+  disabled?: boolean;
 }
 
 export const FormikInput: React.FC<FormikInputProps> = ({
@@ -172,6 +173,7 @@ export const FormikInput: React.FC<FormikInputProps> = ({
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         value={internalVal}
+        disabled={props.disabled}
         {...props}
       />
       {helperText && (
