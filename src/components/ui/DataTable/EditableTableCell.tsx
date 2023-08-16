@@ -40,6 +40,7 @@ export const EditableTableCell = <TData, TValue>(
     firstFieldInForm,
     lastFieldInForm,
     editable,
+    setHasUpdate,
   } = table.options.meta || {};
 
   const index = row.index;
@@ -54,10 +55,17 @@ export const EditableTableCell = <TData, TValue>(
       }
     }
   };
+
+  const setArrayTouched = () => {
+    setTouchedRows && setTouchedRows(index);
+  };
+
   // Define a common prop object for the formik components
   const commonProps = {
     name: controlName,
     onKeyDown: handleKeyDown,
+    setArrayTouched: setTouchedRows ? setArrayTouched : undefined,
+    setHasUpdate: setHasUpdate ? setHasUpdate : undefined,
   };
 
   // Return the appropriate formik component based on the type

@@ -7,7 +7,7 @@ import axiosClient from "@/utils/api";
 import { PRIMARY_KEY } from "@/utils/constants/CardUnityConstants";
 import { UseQueryResult, useMutation, useQuery } from "@tanstack/react-query";
 
-const BASE_URL = "cardUnities";
+const BASE_URL = "card-unities";
 
 type IndexAndID = {
   index: number;

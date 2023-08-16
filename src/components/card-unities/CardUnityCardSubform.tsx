@@ -34,6 +34,7 @@ import {
 import { FormikProps } from "formik";
 import { ChevronLast, Plus } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import { useCardUnityStore } from "@/hooks/card-unities/useCardUnityStore";
 
 interface CardUnityCardSubformProps {
   formik: FormikProps<CardUnityFormFormikInitialValues>;
@@ -65,6 +66,11 @@ const CardUnityCardSubform: React.FC<CardUnityCardSubformProps> = ({
     setCurrentData: state.setCurrentData,
   }));
   const { setRecordsToDelete } = useCardUnityCardDeleteDialog();
+
+  //Zustand
+  const { setHasUpdate } = useCardUnityStore((state) => ({
+    setHasUpdate: state.setHasUpdate,
+  }));
 
   //Tanstack queries
 
@@ -192,6 +198,7 @@ const CardUnityCardSubform: React.FC<CardUnityCardSubformProps> = ({
     },
     meta: {
       name: PLURALIZED_MODEL_NAME,
+      setHasUpdate: () => setHasUpdate(true),
       setTouchedRows,
       addRow,
       deleteRow,

@@ -45,7 +45,7 @@ const Combobox: React.FC<Combobox> = ({ value, onChange, list, caption }) => {
           size={"sm"}
           role="combobox"
           aria-expanded={open}
-          className="justify-between w-full"
+          className="justify-between w-full whitespace-nowrap text-ellipsis"
         >
           {/* Display selected internalValues or default text */}
           {value

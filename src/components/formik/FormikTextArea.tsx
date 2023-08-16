@@ -24,6 +24,7 @@ export interface FormikTextAreaProps extends TextareaProps {
   inputRef?: RefObject<HTMLTextAreaElement> | undefined;
   containerClassNames?: ClassValue[];
   helperText?: string;
+  setHasUpdate?: () => void;
 }
 
 export const FormikTextArea: React.FC<FormikTextAreaProps> = ({
@@ -51,6 +52,7 @@ export const FormikTextArea: React.FC<FormikTextAreaProps> = ({
 
   const handleBlur: FocusEventHandler<HTMLTextAreaElement> = () => {
     internalVal && setArrayTouched && setArrayTouched();
+    internalVal && props.setHasUpdate && props.setHasUpdate();
     setValue(internalVal);
   };
 

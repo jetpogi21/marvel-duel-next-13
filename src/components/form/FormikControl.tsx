@@ -16,6 +16,7 @@ interface ControlProps {
   placeholder?: string;
   containerClassNames?: ClassValue[];
   disabled?: boolean;
+  setHasUpdate?: () => void;
 }
 
 interface TextProps extends ControlProps {
@@ -81,6 +82,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           label={label}
           submitOnChange={submitOnChange}
           containerClassNames={containerClassNames}
+          setHasUpdate={props.setHasUpdate}
         />
       );
     case "FacetedControl":
@@ -91,6 +93,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           label={label}
           containerClassNames={containerClassNames}
           limit={props.limit || 4}
+          setHasUpdate={props.setHasUpdate}
         />
       );
     case "ComboBox":
@@ -101,6 +104,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           label={label}
           containerClassNames={containerClassNames}
           showLabel={props.showLabel}
+          setHasUpdate={props.setHasUpdate}
         />
       );
     case "Select":
@@ -112,6 +116,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           containerClassNames={containerClassNames}
           showLabel={props.showLabel}
           allowBlank={props.allowBlank || false}
+          setHasUpdate={props.setHasUpdate}
         />
       );
     case "Textarea":
@@ -120,6 +125,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           name={name}
           label={label}
           containerClassNames={containerClassNames}
+          setHasUpdate={props.setHasUpdate}
         />
       );
     case "WholeNumber":
@@ -130,6 +136,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           isNumeric={true}
           wholeNumberOnly={true}
           containerClassNames={containerClassNames}
+          setHasUpdate={props.setHasUpdate}
         />
       );
     default:
@@ -143,6 +150,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           inputRef={props.inputRef}
           setFocusOnLoad={props.setFocusOnLoad}
           disabled={props.disabled}
+          setHasUpdate={props.setHasUpdate}
         />
       );
   }

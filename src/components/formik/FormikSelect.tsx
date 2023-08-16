@@ -31,6 +31,7 @@ export interface FormikSelectProps extends ButtonProps {
   options: BasicModel[];
   showLabel: boolean;
   allowBlank: boolean;
+  setHasUpdate?: () => void;
 }
 
 export const FormikSelect: React.FC<FormikSelectProps> = ({
@@ -50,7 +51,7 @@ export const FormikSelect: React.FC<FormikSelectProps> = ({
   const { submitForm } = useFormikContext();
   const [field, meta, { setValue }] = useField(props.name);
   const fieldValue = field.value || "";
-  console.log(fieldValue);
+
   const [internalVal, setInternalVal] = useState(fieldValue);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -60,6 +61,7 @@ export const FormikSelect: React.FC<FormikSelectProps> = ({
   const handleChange = (newValue: string) => {
     setValue(newValue);
     setArrayTouched && setArrayTouched();
+    props.setHasUpdate && props.setHasUpdate();
     submitOnChange && submitForm();
   };
 

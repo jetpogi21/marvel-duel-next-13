@@ -20,6 +20,7 @@ export interface FormikFacetedControlProps extends ButtonProps {
   containerClassNames?: ClassValue[];
   options: BasicModel[];
   limit?: number;
+  setHasUpdate?: () => void;
 }
 
 export const FormikFacetedControl: React.FC<FormikFacetedControlProps> = ({
@@ -45,6 +46,7 @@ export const FormikFacetedControl: React.FC<FormikFacetedControlProps> = ({
   const handleValueChange = (newValue: string[]) => {
     setValue(newValue);
     setArrayTouched && setArrayTouched();
+    props.setHasUpdate && props.setHasUpdate();
     submitOnChange && submitForm();
   };
 

@@ -14,6 +14,7 @@ type State = {
   currentData: CardModel[];
   isUpdating: boolean;
   sort: string;
+  hasUpdate: boolean;
 };
 
 type Actions = {
@@ -28,6 +29,7 @@ type Actions = {
   setCurrentData: (item: CardModel[]) => void;
   setIsUpdating: (isUpdating: boolean) => void;
   setSort: (sort: string) => void;
+  setHasUpdate: (hasUpdate: boolean) => void;
 };
 
 // Create your store, which includes both state and (optionally) actions
@@ -64,6 +66,8 @@ const useCardStore = create<State & Actions>((set) => ({
   setIsUpdating: (isUpdating: boolean) => set({ isUpdating }),
   sort: DEFAULT_SORT_BY,
   setSort: (sort) => set({ sort }),
+  hasUpdate: false,
+  setHasUpdate: (hasUpdate) => set({ hasUpdate: hasUpdate }),
 }));
 
 export { useCardStore };

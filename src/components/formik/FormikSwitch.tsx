@@ -23,6 +23,7 @@ export interface FormikSwitchProps extends ButtonProps {
   helperText?: string;
   submitOnChange?: boolean;
   containerClassNames?: ClassValue[];
+  setHasUpdate?: () => void;
 }
 
 export const FormikSwitch: React.FC<FormikSwitchProps> = ({
@@ -47,6 +48,7 @@ export const FormikSwitch: React.FC<FormikSwitchProps> = ({
 
   const handleChange = (checked: boolean) => {
     setValue(checked);
+    props.setHasUpdate && props.setHasUpdate();
     if (submitOnChange) {
       submitForm();
     }

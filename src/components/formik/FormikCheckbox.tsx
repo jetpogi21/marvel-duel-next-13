@@ -41,6 +41,7 @@ export const FormikCheckbox: React.FC<FormikCheckboxProps> = ({
   const hasError = meta.touched && meta.error;
 
   const handleChange = (checked: boolean) => {
+    setArrayTouched && setArrayTouched();
     setValue(checked);
     if (submitOnChange) {
       submitForm();

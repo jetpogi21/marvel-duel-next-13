@@ -22,6 +22,7 @@ export interface FormikInputProps extends InputProps {
   wholeNumberOnly?: boolean;
   allowNegative?: boolean;
   disabled?: boolean;
+  setHasUpdate?: () => void;
 }
 
 export const FormikInput: React.FC<FormikInputProps> = ({
@@ -76,13 +77,13 @@ export const FormikInput: React.FC<FormikInputProps> = ({
       handleTyping();
     }
     if (submitOnChange) {
-      console.log(targetValue, submitOnChange);
       setValue(targetValue);
     }
   };
 
   const handleBlur = () => {
     internalVal && setArrayTouched && setArrayTouched();
+    internalVal && props.setHasUpdate && props.setHasUpdate();
     setValue(internalVal);
   };
 

@@ -12,5 +12,6 @@ declare module "@tanstack/table-core" {
     firstFieldInForm?: string;
     lastFieldInForm?: string;
     editable?: boolean;
+    setHasUpdate?: () => void;
   }
 }
