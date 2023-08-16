@@ -35,6 +35,7 @@ export const FormikTextArea: React.FC<FormikTextAreaProps> = ({
   inputRef: propInputRef,
   onKeyDown,
   helperText,
+  setHasUpdate,
   ...props
 }) => {
   const [field, meta, { setValue }] = useField(props.name);
@@ -51,9 +52,11 @@ export const FormikTextArea: React.FC<FormikTextAreaProps> = ({
   };
 
   const handleBlur: FocusEventHandler<HTMLTextAreaElement> = () => {
-    internalVal && setArrayTouched && setArrayTouched();
-    internalVal && props.setHasUpdate && props.setHasUpdate();
-    setValue(internalVal);
+    if (fieldValue !== internalVal) {
+      internalVal && setArrayTouched && setArrayTouched();
+      internalVal && setHasUpdate && setHasUpdate();
+      setValue(internalVal);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

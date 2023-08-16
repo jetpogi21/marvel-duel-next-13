@@ -54,7 +54,7 @@ export function CardUnityRowActions<TData, TValue>({
   return (
     !isHidden && (
       <DropdownMenu open={open}>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             className="flex w-8 h-8 p-0"

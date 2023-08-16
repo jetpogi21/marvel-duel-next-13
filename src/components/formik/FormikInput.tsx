@@ -37,6 +37,7 @@ export const FormikInput: React.FC<FormikInputProps> = ({
   wholeNumberOnly = true,
   allowNegative = false,
   isNumeric = false,
+  setHasUpdate,
   ...props
 }) => {
   const { submitForm } = useFormikContext();
@@ -83,7 +84,7 @@ export const FormikInput: React.FC<FormikInputProps> = ({
 
   const handleBlur = () => {
     internalVal && setArrayTouched && setArrayTouched();
-    internalVal && props.setHasUpdate && props.setHasUpdate();
+    internalVal && setHasUpdate && setHasUpdate();
     setValue(internalVal);
   };
 
