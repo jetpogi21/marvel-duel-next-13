@@ -2,7 +2,14 @@
 import { CardUnityCard } from "@/models/CardUnityCardModel";
 import { FindOptions, Transaction } from "sequelize";
 import { Op } from "sequelize";
-import { CardUnityCardFormikShape } from "@/interfaces/CardUnityCardInterfaces";
+import {
+  CardUnityCardDeletePayload,
+  CardUnityCardFormikShape,
+} from "@/interfaces/CardUnityCardInterfaces";
+import sequelize from "@/config/db";
+import { PRIMARY_KEY } from "@/utils/constants/CardUnityCardConstants";
+import { NextResponse } from "next/server";
+import handleSequelizeError from "@/utils/errorHandling";
 
 const ModelObject = CardUnityCard;
 
@@ -68,4 +75,21 @@ export const deleteCardUnityCards = async (
     where: { [primaryKey]: { [Op.in]: deletedIds } },
     transaction: t,
   });
+};
+
+export const DELETE = async (req: Request) => {
+  const body = (await req.json()) as CardUnityCardDeletePayload;
+  const { deletedCardUnityCards } = body;
+
+  if (deletedCardUnityCards.length > 0) {
+    const t = await sequelize.transaction();
+    try {
+      await deleteCardUnityCards(PRIMARY_KEY, deletedCardUnityCards, t);
+      t.commit();
+      return NextResponse.json("success");
+    } catch (error) {
+      t.rollback();
+      return handleSequelizeError(error);
+    }
+  }
 };
