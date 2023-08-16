@@ -91,6 +91,10 @@
     max-height: calc(var(--radix-popover-content-available-height) - 20px);
     overflow-y: auto;
   }
+
+  .main-height-less-footer {
+    min-height: calc(100vh - 50px - 1rem);
+  }
 }
 
 .custom-bounce {
