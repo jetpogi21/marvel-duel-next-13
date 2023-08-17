@@ -15,6 +15,7 @@ const getHeroes = async () => {
     } as Partial<HeroSearchParams>,
   });
 
+  console.log(data);
   return data.rows.map((item) => ({
     id: item.belongsto_id,
     name: item.heroName,
