@@ -18,16 +18,21 @@ type ColumnDefMeta = {
   label: string;
 };
 
-export const EditableTableCell = <TData, TValue>(
-  cell: CellContext<TData, unknown>
-) => {
+type EditableCellProps<TData, TValue> = {
+  cell: CellContext<TData, TValue>;
+  options?: BasicModel[];
+};
+
+export const EditableTableCell = <TData, TValue>({
+  cell,
+  options,
+}: EditableCellProps<TData, TValue>) => {
   const { getValue, row, column, table } = cell;
 
   const dataRows = table.getFilteredRowModel().rows.length;
 
   // Use type assertion to access the column definition meta
   const type = (column.columnDef.meta as ColumnDefMeta).type;
-  const options = (column.columnDef.meta as ColumnDefMeta).options;
   const isNumeric = (column.columnDef.meta as ColumnDefMeta).isNumeric;
   const isWholeNumber = (column.columnDef.meta as ColumnDefMeta).isWholeNumber;
   const label = (column.columnDef.meta as ColumnDefMeta).label;
@@ -57,7 +62,7 @@ export const EditableTableCell = <TData, TValue>(
   };
 
   const setArrayTouched = () => {
-    setTouchedRows && setTouchedRows(index);
+    /* setTouchedRows && setTouchedRows(index); */
   };
 
   // Define a common prop object for the formik components
@@ -98,7 +103,7 @@ export const EditableTableCell = <TData, TValue>(
       return (
         <FormikSelect
           {...commonProps}
-          options={options}
+          options={options || []}
           showLabel={false}
           allowBlank={false}
         />
