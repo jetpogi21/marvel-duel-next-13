@@ -24,28 +24,32 @@ import { useDeckStore } from "@/hooks/decks/useDeckStore";
 
 interface DeckDeleteDialogProps {
   onSuccess?: () => void;
-   formik?: any;
+  formik?: any;
 }
 
 export function DeckDeleteDialog(props: DeckDeleteDialogProps) {
   const [mounted, setMounted] = useState(false);
-    const [
+  const [
     isDialogLoading,
     recordsToDelete,
     setRecordsToDelete,
     setIsDialogLoading,
+    mutate,
   ] = useDeckDeleteDialog((state) => [
     state.isDialogLoading,
     state.recordsToDelete,
     state.setRecordsToDelete,
     state.setIsDialogLoading,
+    state.mutate,
   ]);
 
-  const [currentData, resetRowSelection, setCurrentData] = useDeckStore((state) => [
-    state.currentData,
-    state.resetRowSelection,
-    state.setCurrentData,
-  ]);
+  const [currentData, resetRowSelection, setCurrentData] = useDeckStore(
+    (state) => [
+      state.currentData,
+      state.resetRowSelection,
+      state.setCurrentData,
+    ]
+  );
 
   const deleteDecks = async (payload: DeckDeletePayload) => {
     const { data } = (await axiosClient({
@@ -57,7 +61,7 @@ export function DeckDeleteDialog(props: DeckDeleteDialogProps) {
     return data;
   };
 
-  const { mutate } = useMutation({
+  /* const { mutate } = useMutation({
     mutationFn: deleteDecks,
     onMutate: () => {
       setIsDialogLoading(true);
@@ -75,13 +79,14 @@ export function DeckDeleteDialog(props: DeckDeleteDialogProps) {
       setIsDialogLoading(false);
       resetRowSelection();
     },
-  });
+  }); */
 
   //state transformation
   const open = recordsToDelete.length > 0;
   const s = recordsToDelete.length > 1 ? "s" : "";
   const caption =
-    recordsToDelete.length > 1 ? PLURALIZED_VERBOSE_MODEL_NAME
+    recordsToDelete.length > 1
+      ? PLURALIZED_VERBOSE_MODEL_NAME
       : VERBOSE_MODEL_NAME;
 
   const mutateDeck = () => {

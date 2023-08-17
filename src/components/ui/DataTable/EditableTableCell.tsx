@@ -62,7 +62,7 @@ export const EditableTableCell = <TData, TValue>({
   };
 
   const setArrayTouched = () => {
-    /* setTouchedRows && setTouchedRows(index); */
+    setTouchedRows && setTouchedRows(index);
   };
 
   // Define a common prop object for the formik components
