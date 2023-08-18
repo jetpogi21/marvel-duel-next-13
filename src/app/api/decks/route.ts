@@ -155,10 +155,8 @@ function getDeckSQL(
 
     if (q && !dontFilter) {
       const fields: string[] = ["name"];
-      const likeFields = fields.map((field) => `${field} LIKE :q`);
-
-      filters.push(`(${likeFields.join(" OR ")})`);
-      replacements["q"] = `%${q}%`;
+      replacements["q"] = `*${q}*`;
+      filters.push(`MATCH (${fields.join(",")}) AGAINST (:q IN boolean mode)`);
     }
 
     if (query.is_hero === "true") {
@@ -375,7 +373,10 @@ export const DELETE = async (req: Request) => {
     try {
       await deleteDecks(PRIMARY_KEY, deletedDecks, t);
       t.commit();
-      return NextResponse.json("success");
+      return NextResponse.json({
+        status: "success",
+        recordsDeleted: deletedDecks.length,
+      });
     } catch (error) {
       t.rollback();
       return handleSequelizeError(error);

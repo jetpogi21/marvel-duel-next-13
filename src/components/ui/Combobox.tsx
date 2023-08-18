@@ -39,12 +39,7 @@ const Combobox: React.FC<Combobox> = ({ value, onChange, list, caption }) => {
       open={open}
       onOpenChange={setOpen}
     >
-      <PopoverTrigger
-        asChild
-        onFocus={(event) => {
-          setOpen(true);
-        }}
-      >
+      <PopoverTrigger asChild>
         <Button
           variant="outline"
           size={"sm"}

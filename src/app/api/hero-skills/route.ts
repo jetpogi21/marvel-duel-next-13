@@ -278,7 +278,10 @@ export const DELETE = async (req: Request) => {
     try {
       await deleteHeroSkills(PRIMARY_KEY, deletedHeroSkills, t);
       t.commit();
-      return NextResponse.json("success");
+      return NextResponse.json({
+        status: "success",
+        recordsDeleted: deletedHeroSkills.length,
+      });
     } catch (error) {
       t.rollback();
       return handleSequelizeError(error);
