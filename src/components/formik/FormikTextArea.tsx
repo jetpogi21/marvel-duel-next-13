@@ -71,6 +71,12 @@ export const FormikTextArea: React.FC<FormikTextAreaProps> = ({
   };
 
   useEffect(() => {
+    if (fieldValue !== internalVal) {
+      setInternalVal(fieldValue);
+    }
+  }, [fieldValue]);
+
+  useEffect(() => {
     if (inputRef && setFocusOnLoad) {
       inputRef.current?.focus();
     }
