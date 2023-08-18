@@ -95,7 +95,7 @@ const CardDataTable: React.FC = () => {
   const getCurrentData = (page: number) => {
     return [
       ...cardData!.pages[page - 1].rows.map((item) => ({
-        ...item
+        ...item,
       })),
     ];
   };
@@ -244,7 +244,7 @@ const CardDataTable: React.FC = () => {
                         style={{
                           width: `${customWidth}px`,
                         }}
-align={
+                        align={
                           (header.column.columnDef.meta as any)?.alignment ||
                           "left"
                         }
