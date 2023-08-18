@@ -43,14 +43,14 @@ const CardFilterForm: React.FC = () => {
   const { data: cardKeywordList } = useCardKeywordList();
 
   //Zustand stores
-  const [setPage, setLastPage, setFetchCount, resetRowSelection] = useCardStore(
-    (state) => [
+  const [setPage, setLastPage, setFetchCount, resetRowSelection, setCursor] =
+    useCardStore((state) => [
       state.setPage,
       state.setLastPage,
       state.setFetchCount,
       state.resetRowSelection,
-    ]
-  );
+      state.setCursor,
+    ]);
 
   const handleFormikSubmit = (
     values: Partial<CardFormikFilter>,
@@ -65,6 +65,7 @@ const CardFilterForm: React.FC = () => {
     router.push(newURL);
     setFetchCount(true);
     setPage(1);
+    setCursor("");
     setLastPage(1);
     resetRowSelection();
   };
@@ -92,7 +93,7 @@ const CardFilterForm: React.FC = () => {
 
     return (
       <Form
-        className="flex flex-col gap-2 w-[750px]"
+        className="flex flex-col gap-2"
         autoComplete="off"
       >
         <div className="flex flex-wrap gap-2">
