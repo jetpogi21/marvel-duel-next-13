@@ -10,10 +10,10 @@ import {
 } from "react";
 import { ClassValue } from "clsx";
 import { cn } from "@/lib/utils";
-import { Switch } from "@/components/ui/Switch";
+import { Switch, SwitchProps } from "@/components/ui/Switch";
 import { ButtonProps } from "@/components/ui/Button";
 
-export interface FormikSwitchProps extends ButtonProps {
+export interface FormikSwitchProps extends SwitchProps {
   label?: string;
   name: string;
   setFocusOnLoad?: boolean;

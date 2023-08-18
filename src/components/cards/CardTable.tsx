@@ -36,6 +36,7 @@ const CardTable: React.FC = () => {
   const deckId = query["deckId"] || "";
   const type = query["type"] || "";
   const cardKeyword = query["cardKeyword"] || "";
+  const hasUnity = query["hasUnity"] || "";
   const sort = query["sort"] || DEFAULT_SORT_BY;
   const limit = query["limit"] || DEFAULT_LIMIT;
 
@@ -72,6 +73,7 @@ const CardTable: React.FC = () => {
         deckId,
         type,
         cardKeyword,
+        hasUnity,
       },
       DEFAULT_FILTERS,
       {
@@ -160,6 +162,7 @@ const CardTable: React.FC = () => {
     deckId,
     type,
     cardKeyword,
+    hasUnity,
   ]);
 
   return <CardDataTable />;

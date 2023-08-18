@@ -3,7 +3,10 @@ import { FormikCombobox } from "@/components/formik/FormikCombobox";
 import { FormikFacetedControl } from "@/components/formik/FormikFacetedControl";
 import { FormikInput } from "@/components/formik/FormikInput";
 import { FormikSelect } from "@/components/formik/FormikSelect";
-import { FormikSwitch } from "@/components/formik/FormikSwitch";
+import {
+  FormikSwitch,
+  FormikSwitchProps,
+} from "@/components/formik/FormikSwitch";
 import { FormikTextArea } from "@/components/formik/FormikTextArea";
 import { BasicModel } from "@/interfaces/GeneralInterfaces";
 import { ClassValue } from "clsx";
@@ -35,6 +38,7 @@ interface WholeNumberProps extends ControlProps {
 
 interface SwitchProps extends ControlProps {
   type: "Switch";
+  size: FormikSwitchProps["size"];
 }
 
 interface ComboBoxProps extends ControlProps {
@@ -82,6 +86,7 @@ const FormikControl: React.FC<FormikControlProps> = (props) => {
           label={label}
           submitOnChange={submitOnChange}
           containerClassNames={containerClassNames}
+          size={props.size || undefined}
           setHasUpdate={props.setHasUpdate}
         />
       );

@@ -50,10 +50,17 @@ export function addCursorFilterToQuery(
   sortField: string,
   PRIMARY_KEY: string,
   replacements: Record<string, any>,
-  filters: string[]
+  filters: string[],
+  tableName?: string
 ): void {
   const cursorCondition = sort.includes("-") ? "<" : ">";
   const [cursorArray0, cursorArray1] = splitWordByLastHyphen(cursor);
+
+  const realPrimaryKey = tableName
+    ? `${tableName}.${PRIMARY_KEY}`
+    : PRIMARY_KEY;
+
+  const realSortField = tableName ? `${tableName}.${sortField}` : sortField;
 
   const addFilter = (
     condition: string,
@@ -69,21 +76,23 @@ export function addCursorFilterToQuery(
   if (sortField !== PRIMARY_KEY) {
     if (!cursorArray0) {
       addFilter(
-        `${sortField} IS NULL AND ${PRIMARY_KEY} > :cursorArray1`,
+        `${realSortField} IS NULL AND ${realPrimaryKey} > :cursorArray1`,
         cursorCondition === "<"
-          ? `(${sortField} IS NULL AND ${PRIMARY_KEY} > :cursorArray1)`
-          : `NOT ${sortField} IS NULL OR (${sortField} IS NULL AND ${PRIMARY_KEY} > :cursorArray1)`,
+          ? `(${realSortField} IS NULL AND ${realPrimaryKey} > :cursorArray1)`
+          : `NOT ${realSortField} IS NULL OR (${realSortField} IS NULL AND ${realPrimaryKey} > :cursorArray1)`,
         { cursorArray1 }
       );
     } else {
       addFilter(
-        `(${sortField} ${cursorCondition} :cursorArray0 OR (${sortField} = :cursorArray0 AND ${PRIMARY_KEY} > :cursorArray1))`,
+        `(${realSortField} ${cursorCondition} :cursorArray0 OR (${realSortField} = :cursorArray0 AND ${realPrimaryKey} > :cursorArray1))`,
         undefined,
         { cursorArray0, cursorArray1 }
       );
     }
   } else {
-    addFilter(`${sortField} ${cursorCondition} :cursor`, undefined, { cursor });
+    addFilter(`${realSortField} ${cursorCondition} :cursor`, undefined, {
+      cursor,
+    });
   }
 }
 
