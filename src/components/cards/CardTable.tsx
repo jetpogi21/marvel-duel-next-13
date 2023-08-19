@@ -88,6 +88,7 @@ const CardTable: React.FC = () => {
       params: axiosParams,
     });
 
+    console.log(data);
     return data;
   };
 
