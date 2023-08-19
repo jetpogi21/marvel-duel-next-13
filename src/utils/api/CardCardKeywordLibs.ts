@@ -6,7 +6,7 @@ import { Transaction } from "sequelize";
 
 //Reusable functions
 export const createCardCardKeyword = async (
-  cardCardKeyword: Omit<CardCardKeywordFormikShape, "touched" | "index">,
+  cardCardKeyword: Omit<CardCardKeywordFormikShape, "touched" | "index" | "id">,
   t: Transaction
 ) => {
   return await CardCardKeyword.create(

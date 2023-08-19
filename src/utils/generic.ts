@@ -70,8 +70,8 @@ export const genericGetAndCountAll = async (
 
 export const genericGetOne = async (
   ModelObject: ModelStatic<any>,
-  id: string,
-  options?: FindOptions<any>
+  options: FindOptions<any>,
+  id: string
 ) => {
   try {
     const data = await ModelObject.findByPk(id, options);
