@@ -248,7 +248,7 @@ const CardKeywordFormArray: React.FC<CardKeywordFormArrayProps> = ({
     if (willFocus) {
       focusOnRef();
     }
-  }, [formik.values.CardKeywords]);
+  }, [formik.values.CardKeywords, willFocus]);
 
   return (
     <Form

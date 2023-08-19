@@ -276,7 +276,10 @@ export const CardColumns: ColumnDef<CardModel>[] = [
           <div>{cell.row.original.Deck.name}</div>
           {cell.row.original.LockedDeckCards.map((item) => {
             return (
-              <div className="flex items-center px-2 py-1 rounded-sm whitespace-nowrap bg-accent">
+              <div
+                key={item.id}
+                className="flex items-center px-2 py-1 rounded-sm whitespace-nowrap bg-accent"
+              >
                 <Lock className="w-3 h-3 mr-1" /> {item.LockedDeck.name}
               </div>
             );
