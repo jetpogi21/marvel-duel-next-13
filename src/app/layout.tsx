@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className="flex w-full min-h-screen">
         <Providers>
           <ClientProviders>
-            <Sidebar sessionButton={<SessionButton />} />
+            <Sidebar />
             <main className="flex flex-col flex-1 pt-4 pl-0 pr-4">
               {children}
               <Footer />

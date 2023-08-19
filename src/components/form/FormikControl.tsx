@@ -38,7 +38,7 @@ interface WholeNumberProps extends ControlProps {
 
 interface SwitchProps extends ControlProps {
   type: "Switch";
-  size: FormikSwitchProps["size"];
+  size?: FormikSwitchProps["size"];
 }
 
 interface ComboBoxProps extends ControlProps {

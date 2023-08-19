@@ -56,7 +56,7 @@ export const CardUnityColumns: ColumnDef<CardUnityModel>[] = [
     ),
     cell: (cell) => {
       return cell.table.options.meta?.editable ? (
-        <EditableTableCell {...cell} />
+        <EditableTableCell cell={cell} />
       ) : (
         //@ts-ignore
         cell.getValue()
