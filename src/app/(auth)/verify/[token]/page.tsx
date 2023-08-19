@@ -43,7 +43,7 @@ const VerifyToken: React.FC<VerifyTokenProps> = ({ params }) => {
     } else {
       signInUsingToken();
     }
-  }, [success]);
+  }, [success, router, token]);
 
   return (
     <div className="flex flex-col items-center flex-1 px-4 pt-5">
