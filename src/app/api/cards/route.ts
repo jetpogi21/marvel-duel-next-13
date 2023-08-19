@@ -491,9 +491,7 @@ function getCardCardKeywordSQL(
     const cardKeywordArr = cardKeyword.split(",");
     const cardKeywordFilters: string[] = [];
     cardKeywordArr.forEach((item) => {
-      cardKeywordFilters.push(
-        `${TABLE_NAME}.cardkeyword_id = :cardKeyword${item}`
-      );
+      cardKeywordFilters.push(`${table}.cardkeyword_id = :cardKeyword${item}`);
       replacements[`cardKeyword${item}`] = item;
     });
 
