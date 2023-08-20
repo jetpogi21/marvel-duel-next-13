@@ -153,7 +153,7 @@ function getCardSQL(
       //Should result to ((Filter on model 1) OR (Filter on model 2) OR (Filter on model 3))
       //Filter by `CardUnityCard.description`
       orFilters.push(`(\`CardUnityCard.description\` LIKE :q2)`);
-      filters.push(orFilters.join(" OR "));
+      filters.push(`(${orFilters.join(" OR ")})`);
       replacements["q2"] = `%${q}%`;
     }
 
