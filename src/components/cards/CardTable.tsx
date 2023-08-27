@@ -119,7 +119,7 @@ const CardTable: React.FC = () => {
         ]);
       }
 
-      if (dataLastPageRowCount) {
+      if (dataLastPageRowCount !== undefined) {
         setFetchCount(false);
         setRecordCount(dataLastPageRowCount);
       }
