@@ -64,9 +64,6 @@ const CardFilterForm: React.FC = () => {
     const newURL = `${pathname}?${encodeParams(params)}`;
     router.push(newURL);
     setFetchCount(true);
-    setPage(1);
-    setCursor("");
-    setLastPage(1);
     resetRowSelection();
   };
 

@@ -88,7 +88,6 @@ const CardTable: React.FC = () => {
       params: axiosParams,
     });
 
-    console.log(data);
     return data;
   };
 
@@ -101,22 +100,32 @@ const CardTable: React.FC = () => {
       const dataPageLength = data.pages.length;
       const dataLastPageRowCount = data.pages[dataPageLength - 1].count;
 
-      if (dataPageLength > lastPage) {
-        setLastPage(dataPageLength);
-        setPage(dataPageLength);
-        setCurrentData([
-          ...data.pages[dataPageLength - 1].rows.map((item, index) => ({
-            ...item,
-          })),
-        ]);
-      } else {
-        setLastPage(1);
+      if (fetchCount) {
         setPage(1);
+        setLastPage(1);
         setCurrentData([
           ...data.pages[0].rows.map((item, index) => ({
             ...item,
           })),
         ]);
+      } else {
+        if (dataPageLength > lastPage) {
+          setLastPage(dataPageLength);
+          setPage(dataPageLength);
+          setCurrentData([
+            ...data.pages[dataPageLength - 1].rows.map((item, index) => ({
+              ...item,
+            })),
+          ]);
+        } else {
+          setLastPage(1);
+          setPage(1);
+          setCurrentData([
+            ...data.pages[0].rows.map((item, index) => ({
+              ...item,
+            })),
+          ]);
+        }
       }
 
       if (dataLastPageRowCount !== undefined) {
