@@ -145,11 +145,11 @@ function getCardSQL(
     if (q && !dontFilter) {
       const fields: string[] = ["name", "description"];
       orFilters.push(
-        `(MATCH (${fields
-          .map((field) => `${TABLE_NAME}.${field}`)
-          .join(",")}) AGAINST (:q IN boolean mode))`
+        `(${fields
+          .map((field) => `(${TABLE_NAME}.${field} LIKE :q)`)
+          .join(" OR ")})`
       );
-      replacements["q"] = `*${q}*`;
+      replacements["q"] = `%${q}%`;
       //Should result to ((Filter on model 1) OR (Filter on model 2) OR (Filter on model 3))
       //Filter by `CardUnityCard.description`
       orFilters.push(`(\`CardUnityCard.description\` LIKE :q2)`);
