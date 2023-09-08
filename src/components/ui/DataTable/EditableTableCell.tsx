@@ -1,17 +1,29 @@
 import { FormikCheckbox } from "@/components/formik/FormikCheckbox";
 import { FormikCombobox } from "@/components/formik/FormikCombobox";
+import { FormikDate } from "@/components/formik/FormikDate";
+import { FormikDateAndTime } from "@/components/formik/FormikDateAndTime";
+import { FormikDatePicker } from "@/components/formik/FormikDatePicker";
+import { FormikFileInput } from "@/components/formik/FormikFileInput";
 import { FormikInput } from "@/components/formik/FormikInput";
 import { FormikSelect } from "@/components/formik/FormikSelect";
 import { FormikTextArea } from "@/components/formik/FormikTextArea";
-import useHeroList from "@/hooks/heroes/useHeroList";
 import { BasicModel } from "@/interfaces/GeneralInterfaces";
-import { useQuery } from "@tanstack/react-query";
 import { CellContext } from "@tanstack/react-table";
-import { RefObject } from "react";
+import { RefObject, useRef } from "react";
 
 // Define a custom type for the column definition meta
 type ColumnDefMeta = {
-  type: "Textarea" | "Checkbox" | "Input" | "Select" | "ComboBox";
+  type:
+    | "Textarea"
+    | "Checkbox"
+    | "Input"
+    | "Select"
+    | "ComboBox"
+    | "Decimal"
+    | "DateAndTime"
+    | "DatePicker"
+    | "Date"
+    | "FileInput";
   options: BasicModel[];
   isNumeric: boolean;
   isWholeNumber: boolean;
@@ -41,10 +53,10 @@ export const EditableTableCell = <TData, TValue>({
     name,
     setTouchedRows,
     addRow,
-    ref,
     firstFieldInForm,
     lastFieldInForm,
     editable,
+    forwardedRef,
     setHasUpdate,
   } = table.options.meta || {};
 
@@ -80,9 +92,9 @@ export const EditableTableCell = <TData, TValue>({
         <FormikTextArea
           {...commonProps}
           placeholder={label}
-          inputRef={
+          ref={
             dataRows === index + 1 && column.id === firstFieldInForm
-              ? (ref as RefObject<HTMLTextAreaElement>)
+              ? (forwardedRef as RefObject<HTMLTextAreaElement>)
               : undefined
           }
         />
@@ -92,9 +104,9 @@ export const EditableTableCell = <TData, TValue>({
       return (
         <FormikCheckbox
           {...commonProps}
-          inputRef={
+          ref={
             dataRows === index + 1 && column.id === firstFieldInForm
-              ? (ref as RefObject<HTMLButtonElement>)
+              ? (forwardedRef as RefObject<HTMLButtonElement>)
               : undefined
           }
         />
@@ -118,6 +130,62 @@ export const EditableTableCell = <TData, TValue>({
           showLabel={false}
         />
       );
+    case "Decimal":
+      return (
+        <FormikInput
+          placeholder={label}
+          isNumeric={true}
+          wholeNumberOnly={false}
+          {...commonProps}
+          ref={
+            dataRows === index + 1 && column.id === firstFieldInForm
+              ? (forwardedRef as RefObject<HTMLInputElement>)
+              : undefined
+          }
+        />
+      );
+    case "DateAndTime":
+      return (
+        <FormikDateAndTime
+          ref={
+            dataRows === index + 1 && column.id === firstFieldInForm
+              ? (forwardedRef as RefObject<HTMLInputElement>)
+              : undefined
+          }
+          {...commonProps}
+        />
+      );
+    case "Date":
+      return (
+        <FormikDate
+          ref={
+            dataRows === index + 1 && column.id === firstFieldInForm
+              ? (forwardedRef as RefObject<HTMLInputElement>)
+              : undefined
+          }
+          {...commonProps}
+        />
+      );
+    case "DatePicker":
+      return (
+        <FormikDatePicker
+          ref={
+            dataRows === index + 1 && column.id === firstFieldInForm
+              ? (forwardedRef as RefObject<HTMLInputElement>)
+              : undefined
+          }
+          {...commonProps}
+        />
+      );
+    case "FileInput":
+      return (
+        <FormikFileInput
+          {...commonProps}
+          index={row.index}
+          parent={name}
+          fieldName={column.id}
+        />
+      );
     default:
       return (
         <FormikInput
@@ -125,9 +193,9 @@ export const EditableTableCell = <TData, TValue>({
           isNumeric={isNumeric}
           wholeNumberOnly={isWholeNumber}
           {...commonProps}
-          inputRef={
+          ref={
             dataRows === index + 1 && column.id === firstFieldInForm
-              ? (ref as RefObject<HTMLInputElement>)
+              ? (forwardedRef as RefObject<HTMLInputElement>)
               : undefined
           }
         />
