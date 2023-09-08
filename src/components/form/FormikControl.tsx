@@ -26,6 +26,7 @@ interface ControlProps {
   disabled?: boolean;
   setHasUpdate?: () => void;
   ref?: RefObject<any> | undefined;
+  nullAllowed?: boolean;
 }
 
 interface TextProps extends ControlProps {
@@ -183,6 +184,7 @@ const FormikControl = forwardRef<any, FormikControlProps>((props, ref) => {
           wholeNumberOnly={true}
           containerClassNames={containerClassNames}
           setHasUpdate={props.setHasUpdate}
+          nullAllowed={props.nullAllowed}
         />
       );
     case "Decimal":
@@ -194,6 +196,7 @@ const FormikControl = forwardRef<any, FormikControlProps>((props, ref) => {
           wholeNumberOnly={false}
           containerClassNames={containerClassNames}
           setHasUpdate={props.setHasUpdate}
+          nullAllowed={props.nullAllowed}
         />
       );
     case "Checkbox":
@@ -242,6 +245,7 @@ const FormikControl = forwardRef<any, FormikControlProps>((props, ref) => {
           containerClassNames={containerClassNames}
           setHasUpdate={props.setHasUpdate}
           currency={props.currency}
+          nullAllowed={props.nullAllowed}
         />
       );
     case "FileInput":

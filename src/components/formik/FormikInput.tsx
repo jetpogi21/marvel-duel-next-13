@@ -25,6 +25,7 @@ export interface FormikInputProps extends InputProps {
   disabled?: boolean;
   setHasUpdate?: () => void;
   currency?: string;
+  nullAllowed?: boolean;
 }
 
 export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
@@ -40,6 +41,7 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
       wholeNumberOnly = true,
       allowNegative = false,
       isNumeric = false,
+      nullAllowed = false,
       setHasUpdate,
       ...props
     },
@@ -113,7 +115,13 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
               : internalVal
           );
         } else {
-          setValue("0.00");
+          nullAllowed
+            ? setValue("")
+            : setValue(
+                !wholeNumberOnly
+                  ? convertStringToFloat(internalVal).toFixed(2)
+                  : internalVal
+              );
         }
       } else {
         fieldValue !== internalVal && setValue(internalVal);

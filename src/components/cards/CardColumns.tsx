@@ -229,7 +229,9 @@ export const CardColumns: ColumnDef<CardModel>[] = [
           {cell.row.original.CardUnityCards.map((item) => {
             return (
               <>
-                <div className="pt-2">{item.CardUnity.cardCompositions}</div>
+                <div className="flex justify-center p-1 mt-2 text-center rounded-none r md:rounded-full bg-accent/80">
+                  {item.CardUnity.cardCompositions}
+                </div>
                 <div className="pt-2">{item.description}</div>
               </>
             );
