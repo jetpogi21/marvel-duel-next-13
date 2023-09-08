@@ -89,7 +89,7 @@ export const PUT = async (
         item.lockedDeckId = id;
         await LockedDeckCardSchema.validate(item);
 
-        if (item.id === "") {
+        if (item[LOCKEDDECKCARD_PRIMARY_KEY] === "") {
           const lockedDeckCard = await createLockedDeckCard(item, t);
 
           createdLockedDeckCards.push({

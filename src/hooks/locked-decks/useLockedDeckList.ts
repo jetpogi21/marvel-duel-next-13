@@ -7,22 +7,26 @@ import axiosClient from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-const getLockedDecks = async () => {
-  const { data } = await axiosClient.get<GetLockedDecksResponse>(`locked-decks`, {
-    params: {
-      fetchCount: "false",
-      simpleOnly: "true",
-    } as Partial<LockedDeckSearchParams>,
-  });
+const getLockedDecks = async (useName: boolean = false) => {
+  const { data } = await axiosClient.get<GetLockedDecksResponse>(
+    `locked-decks`,
+    {
+      params: {
+        fetchCount: "false",
+        simpleOnly: "true",
+      } as Partial<LockedDeckSearchParams>,
+    }
+  );
 
   return data.rows.map((item) => ({
-    id: item.id,
+    id: !useName ? item.id : item.name,
     name: item.name,
   }));
 };
 
 interface UseListProps {
   placeholderData?: BasicModel[];
+  useName?: boolean;
 }
 
 const useLockedDeckList = (prop?: UseListProps) => {
@@ -31,7 +35,7 @@ const useLockedDeckList = (prop?: UseListProps) => {
 
   const _ = useQuery({
     queryKey: ["lockedDeck-list"],
-    queryFn: getLockedDecks,
+    queryFn: () => getLockedDecks(prop?.useName),
     enabled: mounted,
     placeholderData: prop?.placeholderData,
   });

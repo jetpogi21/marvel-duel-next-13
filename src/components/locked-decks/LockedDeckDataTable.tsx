@@ -77,7 +77,9 @@ const LockedDeckDataTable: React.FC = () => {
     isLoading,
     isFetching,
     fetchNextPage,
-  } = useInfiniteQuery<GetLockedDecksResponse>(["lockedDecks"], { enabled: false });
+  } = useInfiniteQuery<GetLockedDecksResponse>(["lockedDecks"], {
+    enabled: false,
+  });
 
   //Transformations
   const sorting = getSorting(sort);
@@ -95,7 +97,7 @@ const LockedDeckDataTable: React.FC = () => {
   const getCurrentData = (page: number) => {
     return [
       ...lockedDeckData!.pages[page - 1].rows.map((item) => ({
-        ...item
+        ...item,
       })),
     ];
   };
@@ -187,6 +189,9 @@ const LockedDeckDataTable: React.FC = () => {
     manualFiltering: true,
     manualSorting: true,
     enableMultiRowSelection: true,
+    initialState: {
+      columnVisibility: {},
+    },
     meta: {
       name: PLURALIZED_MODEL_NAME,
       deleteRow,
@@ -244,7 +249,7 @@ const LockedDeckDataTable: React.FC = () => {
                         style={{
                           width: `${customWidth}px`,
                         }}
-align={
+                        align={
                           (header.column.columnDef.meta as any)?.alignment ||
                           "left"
                         }
