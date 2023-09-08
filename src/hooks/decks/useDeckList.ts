@@ -7,7 +7,7 @@ import axiosClient from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-const getDecks = async () => {
+const getDecks = async (useName: boolean = false) => {
   const { data } = await axiosClient.get<GetDecksResponse>(`decks`, {
     params: {
       fetchCount: "false",
@@ -16,13 +16,14 @@ const getDecks = async () => {
   });
 
   return data.rows.map((item) => ({
-    id: item.id,
+    id: !useName ? item.id : item.name,
     name: item.name,
   }));
 };
 
 interface UseListProps {
   placeholderData?: BasicModel[];
+  useName?: boolean;
 }
 
 const useDeckList = (prop?: UseListProps) => {
@@ -31,7 +32,7 @@ const useDeckList = (prop?: UseListProps) => {
 
   const _ = useQuery({
     queryKey: ["deck-list"],
-    queryFn: getDecks,
+    queryFn: () => getDecks(prop?.useName),
     enabled: mounted,
     placeholderData: prop?.placeholderData,
   });

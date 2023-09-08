@@ -8,7 +8,6 @@ import React from "react";
 
 const SessionButton: React.FC = async () => {
   const session = await getAuthSession();
-  console.log(session);
 
   //const session = await getAuthSession();
 

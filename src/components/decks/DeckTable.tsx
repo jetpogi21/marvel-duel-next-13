@@ -119,26 +119,13 @@ const DeckTable: React.FC = () => {
 
   //Tanstacks
   const { refetch } = useInfiniteQuery(["decks"], getDecks, {
+    keepPreviousData: true,
     getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
     onSuccess: (data) => {
       const dataPageLength = data.pages.length;
       const dataLastPageRowCount = data.pages[dataPageLength - 1].count;
 
-      if (dataPageLength > lastPage) {
-        setLastPage(dataPageLength);
-        setPage(dataPageLength);
-        setCurrentData([
-          ...data.pages[dataPageLength - 1].rows.map((item, index) => ({
-            ...item,
-            index,
-            touched: false,
-          })),
-          {
-            ...DEFAULT_DECK,
-            index: data.pages[dataPageLength - 1].rows.length,
-          },
-        ]);
-      } else {
+      if (fetchCount) {
         setLastPage(1);
         setPage(1);
         setCurrentData([
@@ -152,9 +139,39 @@ const DeckTable: React.FC = () => {
             index: data.pages[dataPageLength - 1].rows.length,
           },
         ]);
+      } else {
+        if (dataPageLength > lastPage) {
+          setLastPage(dataPageLength);
+          setPage(dataPageLength);
+          setCurrentData([
+            ...data.pages[dataPageLength - 1].rows.map((item, index) => ({
+              ...item,
+              index,
+              touched: false,
+            })),
+            {
+              ...DEFAULT_DECK,
+              index: data.pages[dataPageLength - 1].rows.length,
+            },
+          ]);
+        } else {
+          setLastPage(1);
+          setPage(1);
+          setCurrentData([
+            ...data.pages[0].rows.map((item, index) => ({
+              ...item,
+              index,
+              touched: false,
+            })),
+            {
+              ...DEFAULT_DECK,
+              index: data.pages[dataPageLength - 1].rows.length,
+            },
+          ]);
+        }
       }
 
-      if (dataLastPageRowCount) {
+      if (dataLastPageRowCount !== undefined) {
         setFetchCount(false);
         setRecordCount(dataLastPageRowCount);
       }
@@ -245,14 +262,12 @@ const DeckTable: React.FC = () => {
           : undefined;
       }
     );
-
     refetch();
   };
 
   //Client Actions
   const handleSubmit = async (values: DeckFormikInitialValues) => {
     //The reference is the index of the row
-
     const DecksToBeSubmitted = values.Decks.filter((item) => item.touched);
 
     if (DecksToBeSubmitted.length > 0) {

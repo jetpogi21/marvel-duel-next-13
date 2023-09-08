@@ -6,7 +6,7 @@ import { Transaction } from "sequelize";
 
 //Reusable functions
 export const createDeck = async (
-  deck: Omit<DeckFormikShape, "touched" | "index">,
+  deck: Omit<DeckFormikShape, "touched" | "index" | "id">,
   t: Transaction
 ) => {
   return await Deck.create(
