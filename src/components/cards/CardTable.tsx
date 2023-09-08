@@ -95,6 +95,7 @@ const CardTable: React.FC = () => {
 
   //Tanstacks
   const { refetch } = useInfiniteQuery(["cards"], getCards, {
+    keepPreviousData: true,
     getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
     onSuccess: (data) => {
       const dataPageLength = data.pages.length;

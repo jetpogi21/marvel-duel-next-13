@@ -187,6 +187,9 @@ const CardDataTable: React.FC = () => {
     manualFiltering: true,
     manualSorting: true,
     enableMultiRowSelection: true,
+    initialState: {
+      columnVisibility: {},
+    },
     meta: {
       name: PLURALIZED_MODEL_NAME,
       deleteRow,
