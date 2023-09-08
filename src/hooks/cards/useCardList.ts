@@ -7,7 +7,7 @@ import axiosClient from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-const getCards = async () => {
+const getCards = async (useName: boolean = false) => {
   const { data } = await axiosClient.get<GetCardsResponse>(`cards`, {
     params: {
       fetchCount: "false",
@@ -16,13 +16,14 @@ const getCards = async () => {
   });
 
   return data.rows.map((item) => ({
-    id: item.id,
+    id: !useName ? item.id : item.name,
     name: item.name,
   }));
 };
 
 interface UseListProps {
   placeholderData?: BasicModel[];
+  useName?: boolean;
 }
 
 const useCardList = (prop?: UseListProps) => {
@@ -31,7 +32,7 @@ const useCardList = (prop?: UseListProps) => {
 
   const _ = useQuery({
     queryKey: ["card-list"],
-    queryFn: getCards,
+    queryFn: () => getCards(prop?.useName),
     enabled: mounted,
     placeholderData: prop?.placeholderData,
   });

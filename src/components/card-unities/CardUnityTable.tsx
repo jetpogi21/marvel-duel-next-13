@@ -18,7 +18,7 @@ import { useURL } from "@/hooks/useURL";
 import {
   DEFAULT_FILTERS,
   DEFAULT_SORT_BY,
-} from "@/utils/constants/CardConstants";
+} from "@/utils/constants/CardUnityConstants";
 import CardUnityDataTable from "@/components/card-unities/CardUnityDataTable";
 
 const CardUnityTable: React.FC = () => {
@@ -88,30 +88,41 @@ const CardUnityTable: React.FC = () => {
 
   //Tanstacks
   const { refetch } = useInfiniteQuery(["cardUnities"], getCardUnities, {
+    keepPreviousData: true,
     getNextPageParam: (lastPage) => lastPage.cursor ?? undefined,
     onSuccess: (data) => {
       const dataPageLength = data.pages.length;
       const dataLastPageRowCount = data.pages[dataPageLength - 1].count;
 
-      if (dataPageLength > lastPage) {
-        setLastPage(dataPageLength);
-        setPage(dataPageLength);
-        setCurrentData([
-          ...data.pages[dataPageLength - 1].rows.map((item, index) => ({
-            ...item,
-          })),
-        ]);
-      } else {
-        setLastPage(1);
+      if (fetchCount) {
         setPage(1);
+        setLastPage(1);
         setCurrentData([
           ...data.pages[0].rows.map((item, index) => ({
             ...item,
           })),
         ]);
+      } else {
+        if (dataPageLength > lastPage) {
+          setLastPage(dataPageLength);
+          setPage(dataPageLength);
+          setCurrentData([
+            ...data.pages[dataPageLength - 1].rows.map((item, index) => ({
+              ...item,
+            })),
+          ]);
+        } else {
+          setLastPage(1);
+          setPage(1);
+          setCurrentData([
+            ...data.pages[0].rows.map((item, index) => ({
+              ...item,
+            })),
+          ]);
+        }
       }
 
-      if (dataLastPageRowCount) {
+      if (dataLastPageRowCount !== undefined) {
         setFetchCount(false);
         setRecordCount(dataLastPageRowCount);
       }
