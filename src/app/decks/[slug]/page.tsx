@@ -24,7 +24,7 @@ const DeckFormPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <div className="flex flex-col flex-1 w-full px-4 mx-auto text-sm lg:px-0 main-height-less-footer">
-      <div className="flex flex-col w-full h-full gap-4 p-4 border rounded-sm border-border">
+      <div className="flex flex-col w-full h-full gap-4 p-8 border rounded-sm border-border">
         <div className="flex flex-col h-full">
           <DeckForm
             slug={params.slug}
