@@ -6,7 +6,7 @@ import { Transaction } from "sequelize";
 
 //Reusable functions
 export const createHeroSkill = async (
-  heroSkill: Omit<HeroSkillFormikShape, "touched" | "index">,
+  heroSkill: Omit<HeroSkillFormikShape, "touched" | "index" | "id">,
   t: Transaction
 ) => {
   return await HeroSkill.create(

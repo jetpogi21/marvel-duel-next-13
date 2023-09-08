@@ -99,6 +99,7 @@ export const GET = async (req: Request) => {
     const where: Record<string | symbol, unknown> = { [Op.and]: [] };
     const andFilters = [];
 
+    //@ts-ignore
     const q = query["q"];
 
     if (q) {
