@@ -7,7 +7,7 @@ import axiosClient from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-const getCardKeywords = async () => {
+const getCardKeywords = async (useName: boolean = false) => {
   const { data } = await axiosClient.get<GetCardKeywordsResponse>(
     `card-keywords`,
     {
@@ -19,13 +19,14 @@ const getCardKeywords = async () => {
   );
 
   return data.rows.map((item) => ({
-    id: item.id,
+    id: !useName ? item.id : item.name,
     name: item.name,
   }));
 };
 
 interface UseListProps {
   placeholderData?: BasicModel[];
+  useName?: boolean;
 }
 
 const useCardKeywordList = (prop?: UseListProps) => {
@@ -34,7 +35,7 @@ const useCardKeywordList = (prop?: UseListProps) => {
 
   const _ = useQuery({
     queryKey: ["cardKeyword-list"],
-    queryFn: getCardKeywords,
+    queryFn: () => getCardKeywords(prop?.useName),
     enabled: mounted,
     placeholderData: prop?.placeholderData,
   });
