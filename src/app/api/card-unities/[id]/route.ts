@@ -99,7 +99,7 @@ export const PUT = async (
         item.CardUnityId = id;
         await CardUnityCardSchema.validate(item);
 
-        if (item.id === "") {
+        if (item[CARDUNITYCARD_PRIMARY_KEY] === "") {
           const cardUnityCard = await createCardUnityCard(item, t);
 
           createdCardUnityCards.push({
