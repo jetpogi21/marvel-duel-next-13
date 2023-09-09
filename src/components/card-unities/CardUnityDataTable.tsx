@@ -305,15 +305,9 @@ const CardUnityDataTable: React.FC = () => {
               <p className="hidden md:block">{pageStatus}</p>
               <div className="flex gap-2">
                 <Button
-                  type="submit"
-                  size={"sm"}
-                  isLoading={isUpdating}
-                >
-                  Save Changes
-                </Button>
-                <Button
                   type="button"
                   size="sm"
+                  variant={"secondary"}
                   disabled={!hasPreviousPage}
                   onClick={() => goToPreviousPage()}
                 >
@@ -322,6 +316,7 @@ const CardUnityDataTable: React.FC = () => {
                 <Button
                   type="button"
                   size="sm"
+                  variant={"secondary"}
                   disabled={!hasNextPage}
                   onClick={() => goToNextPage()}
                   isLoading={isFetching}

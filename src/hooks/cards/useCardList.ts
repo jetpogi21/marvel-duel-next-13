@@ -16,6 +16,7 @@ const getCards = async (useName: boolean = false) => {
   });
 
   return data.rows.map((item) => ({
+    ...item,
     id: !useName ? item.id : item.name,
     name: item.name,
   }));
