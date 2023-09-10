@@ -28,7 +28,7 @@ export interface FormikInputProps extends InputProps {
   nullAllowed?: boolean;
 }
 
-export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
+const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
   (
     {
       containerClassNames = "",
@@ -100,18 +100,24 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
         setHasUpdate();
 
       if (isNumeric) {
-        if (internalVal.includes("+")) {
+        const internalValStr: string = internalVal
+          ? internalVal.toString()
+          : "";
+
+        if (internalVal && internalValStr.includes("+")) {
           //@ts-ignore
-          const values = internalVal.split("+").map((val) => parseFloat(val));
+          const values = internalValStr
+            .split("+")
+            .map((val) => parseFloat(val));
 
           //@ts-ignore
           const sum = values.reduce((acc, curr) => acc + curr, 0);
 
           setValue(sum.toFixed(2));
-        } else if (isValidCurrency(internalVal)) {
+        } else if (isValidCurrency(internalValStr)) {
           setValue(
             !wholeNumberOnly
-              ? convertStringToFloat(internalVal).toFixed(2)
+              ? convertStringToFloat(internalValStr).toFixed(2)
               : internalVal
           );
         } else {
@@ -119,7 +125,7 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
             ? setValue("")
             : setValue(
                 !wholeNumberOnly
-                  ? convertStringToFloat(internalVal).toFixed(2)
+                  ? convertStringToFloat(internalValStr).toFixed(2)
                   : internalVal
               );
         }
@@ -240,3 +246,6 @@ export const FormikInput = forwardRef<HTMLInputElement, FormikInputProps>(
     );
   }
 );
+
+FormikInput.displayName = "FormikInput";
+export { FormikInput };

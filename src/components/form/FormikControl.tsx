@@ -273,4 +273,5 @@ const FormikControl = forwardRef<any, FormikControlProps>((props, ref) => {
   }
 });
 
+FormikControl.displayName = "FormikControl";
 export default FormikControl;

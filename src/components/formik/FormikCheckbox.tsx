@@ -20,7 +20,7 @@ export interface FormikCheckboxProps extends ButtonProps {
   setHasUpdate?: () => void;
 }
 
-export const FormikCheckbox = forwardRef<any, FormikCheckboxProps>(
+const FormikCheckbox = forwardRef<any, FormikCheckboxProps>(
   (
     {
       containerClassNames = "",
@@ -94,3 +94,6 @@ export const FormikCheckbox = forwardRef<any, FormikCheckboxProps>(
     );
   }
 );
+
+FormikCheckbox.displayName = "FormikCheckbox";
+export { FormikCheckbox };

@@ -233,7 +233,7 @@ const CardSkillFormArray: React.FC<CardSkillFormArrayProps> = ({ formik }) => {
       toggleSelectAllRow,
       firstFieldInForm: FIRST_FIELD_IN_FORM,
       lastFieldInForm: LAST_FIELD_IN_FORM,
-      ref,
+      forwardedRef: ref,
       editable: true,
       options: {},
     },
